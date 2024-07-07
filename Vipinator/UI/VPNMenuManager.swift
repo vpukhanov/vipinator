@@ -51,12 +51,14 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
         menu.addItem(.separator())
 
         launchAtLoginMenuItem = NSMenuItem(
-            title: "Start at Login",
+            title: "Open at Login",
             action: #selector(toggleLaunchAtLogin),
             keyEquivalent: "")
         launchAtLoginMenuItem?.target = self
         launchAtLoginMenuItem?.state = SMAppService.mainApp.status == .enabled ? .on : .off
         menu.addItem(launchAtLoginMenuItem!)
+
+        menu.addItem(.separator())
 
         let aboutItem = NSMenuItem(title: "About Vipinator", action: #selector(showAboutPanel), keyEquivalent: "")
         aboutItem.target = self
