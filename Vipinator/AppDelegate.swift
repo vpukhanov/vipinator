@@ -30,7 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         
         if let button = statusItem?.button {
-            button.image = NSImage(systemSymbolName: "network.slash", accessibilityDescription: "VPN")
+            button.image = NSImage(systemSymbolName: "bolt.horizontal", accessibilityDescription: "VPN Disconnected")
             button.image?.isTemplate = true
         }
     }
@@ -188,10 +188,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func updateStatusItemIcon() {
         let isAnyVPNConnectedOrConnecting = vpnConnections.contains { $0.status == .connected || $0.status == .connecting }
-        let imageName = isAnyVPNConnectedOrConnecting ? "network" : "network.slash"
+        let imageName = isAnyVPNConnectedOrConnecting ? "bolt.horizontal.fill" : "bolt.horizontal"
+        let accessibilityDescription = isAnyVPNConnectedOrConnecting ? "VPN Connected" : "VPN Disconnected"
         
         if let button = statusItem?.button {
-            button.image = NSImage(systemSymbolName: imageName, accessibilityDescription: "VPN")
+            button.image = NSImage(systemSymbolName: imageName, accessibilityDescription: accessibilityDescription)
             button.image?.isTemplate = true
         }
     }
