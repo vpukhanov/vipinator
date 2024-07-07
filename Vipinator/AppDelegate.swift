@@ -80,12 +80,68 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc func vpnItemClicked(_ sender: NSMenuItem) {
         guard let vpn = sender.representedObject as? VPNConnection else { return }
-        if vpn.status == .invalid {
-            print("VPN is invalid and cannot be activated: \(vpn.name)")
-        } else {
-            print("VPN clicked: \(vpn.name), Current status: \(vpn.status.rawValue)")
-            // TODO: logic to connect/disconnect the VPN
+        
+        // Fetch the current status before taking action
+        VPNManager.getStatusAsync(for: vpn) { [weak self] currentStatus in
+            guard let self = self else { return }
+            
+            switch currentStatus {
+            case .connected:
+                self.disconnectVPN(vpn)
+            case .disconnected, .invalid:
+                self.connectVPN(vpn)
+            case .connecting, .disconnecting:
+                print("VPN is already in transition: \(vpn.name)")
+            }
         }
+    }
+    
+    func connectVPN(_ vpn: VPNConnection) {
+        print("Attempting to connect to VPN: \(vpn.name)")
+        updateVPNStatus(vpn, newStatus: .connecting)
+        
+        VPNManager.connect(to: vpn) { [weak self] success in
+            guard let self = self else { return }
+            if success {
+                print("Successfully connected to VPN: \(vpn.name)")
+                self.updateVPNStatus(vpn, newStatus: .connected)
+            } else {
+                print("Failed to connect to VPN: \(vpn.name)")
+                // Fetch the current status instead of assuming it's disconnected
+                VPNManager.getStatusAsync(for: vpn) { status in
+                    self.updateVPNStatus(vpn, newStatus: status)
+                }
+            }
+        }
+    }
+    
+    func disconnectVPN(_ vpn: VPNConnection) {
+        print("Attempting to disconnect from VPN: \(vpn.name)")
+        updateVPNStatus(vpn, newStatus: .disconnecting)
+        
+        VPNManager.disconnect(from: vpn) { [weak self] success in
+            guard let self = self else { return }
+            if success {
+                print("Successfully disconnected from VPN: \(vpn.name)")
+                self.updateVPNStatus(vpn, newStatus: .disconnected)
+            } else {
+                print("Failed to disconnect from VPN: \(vpn.name)")
+                // Fetch the current status instead of assuming it's connected
+                VPNManager.getStatusAsync(for: vpn) { status in
+                    self.updateVPNStatus(vpn, newStatus: status)
+                }
+            }
+        }
+    }
+
+    func updateVPNStatus(_ vpn: VPNConnection, newStatus: VPNStatus) {
+        if let index = vpnConnections.firstIndex(where: { $0.name == vpn.name }) {
+            vpnConnections[index].status = newStatus
+            if let menu = statusItem?.menu, let item = menu.items.first(where: { ($0.representedObject as? VPNConnection)?.name == vpn.name }) {
+                updateMenuItem(item, with: newStatus)
+            }
+        }
+        print("VPN \(vpn.name) status updated to: \(newStatus)")
     }
 }
 

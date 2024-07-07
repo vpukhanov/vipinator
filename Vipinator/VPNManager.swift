@@ -98,6 +98,66 @@ class VPNManager {
         }
     }
     
+    static func connect(to connection: VPNConnection, completion: @escaping (Bool) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let initialStatus = getStatus(for: connection)
+            
+            let task = Process()
+            task.launchPath = "/usr/sbin/networksetup"
+            task.arguments = ["-connectpppoeservice", connection.name]
+            
+            do {
+                try task.run()
+                task.waitUntilExit()
+                
+                // Wait a bit for the connection to establish
+                Thread.sleep(forTimeInterval: 2)
+                
+                let finalStatus = getStatus(for: connection)
+                let success = (initialStatus != .connected) && (finalStatus == .connected)
+                
+                DispatchQueue.main.async {
+                    completion(success)
+                }
+            } catch {
+                print("Failed to connect to VPN: \(error)")
+                DispatchQueue.main.async {
+                    completion(false)
+                }
+            }
+        }
+    }
+    
+    static func disconnect(from connection: VPNConnection, completion: @escaping (Bool) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let initialStatus = getStatus(for: connection)
+            
+            let task = Process()
+            task.launchPath = "/usr/sbin/networksetup"
+            task.arguments = ["-disconnectpppoeservice", connection.name]
+            
+            do {
+                try task.run()
+                task.waitUntilExit()
+                
+                // Wait a bit for the disconnection to complete
+                Thread.sleep(forTimeInterval: 2)
+                
+                let finalStatus = getStatus(for: connection)
+                let success = (initialStatus == .connected) && (finalStatus != .connected)
+                
+                DispatchQueue.main.async {
+                    completion(success)
+                }
+            } catch {
+                print("Failed to disconnect from VPN: \(error)")
+                DispatchQueue.main.async {
+                    completion(false)
+                }
+            }
+        }
+    }
+    
     private static let excludedServices = ["Wi-Fi", "Bluetooth PAN", "Thunderbolt Bridge"]
     
     private static func parseNetworkServices(_ output: String) -> [VPNConnection] {
