@@ -12,7 +12,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var menuManager: VPNMenuManager!
     private var networkObserver: NetworkConfigurationObserver!
 
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
+    func applicationDidFinishLaunching(_: Notification) {
         Task { @MainActor in
             statusItemManager = VPNStatusItemManager()
             menuManager = VPNMenuManager(statusItemManager: statusItemManager)
@@ -24,7 +24,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    func applicationWillTerminate(_ aNotification: Notification) {
+    func applicationWillTerminate(_: Notification) {
         networkObserver.stopObserving()
     }
 

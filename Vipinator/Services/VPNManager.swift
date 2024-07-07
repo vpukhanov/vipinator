@@ -19,7 +19,7 @@ struct VPNConnection: Identifiable, Equatable {
     var status: VPNStatus = .disconnected
 }
 
-final class VPNManager {
+enum VPNManager {
     private static let excludedServices = ["Wi-Fi", "Bluetooth PAN", "Thunderbolt Bridge"]
 
     static func getAvailableVPNs() async throws -> [VPNConnection] {
@@ -104,7 +104,9 @@ final class VPNManager {
                 if let name = currentConnection.name,
                    let hardwarePort = currentConnection.hardwarePort,
                    !excludedServices.contains(name) {
-                    vpnConnections.append(VPNConnection(name: name, hardwarePort: hardwarePort, device: currentConnection.device ?? ""))
+                    vpnConnections.append(
+                        VPNConnection(name: name, hardwarePort: hardwarePort, device: currentConnection.device ?? "")
+                    )
                 }
                 currentConnection.name = line.extractName()
                 currentConnection.hardwarePort = nil
@@ -121,7 +123,9 @@ final class VPNManager {
         if let name = currentConnection.name,
            let hardwarePort = currentConnection.hardwarePort,
            !excludedServices.contains(name) {
-            vpnConnections.append(VPNConnection(name: name, hardwarePort: hardwarePort, device: currentConnection.device ?? ""))
+            vpnConnections.append(
+                VPNConnection(name: name, hardwarePort: hardwarePort, device: currentConnection.device ?? "")
+            )
         }
 
         return vpnConnections
@@ -136,24 +140,24 @@ final class VPNManager {
 
 private extension String {
     func matches(regex: String) -> Bool {
-        return self.range(of: regex, options: .regularExpression) != nil
+        return range(of: regex, options: .regularExpression) != nil
     }
 
     func extractName() -> String {
-        self.trimmingCharacters(in: .whitespaces)
+        trimmingCharacters(in: .whitespaces)
             .replacingOccurrences(of: "(*)", with: "")
             .replacingOccurrences(of: "^\\(\\d+\\)\\s*", with: "", options: .regularExpression)
             .trimmingCharacters(in: .whitespaces)
     }
 
     func extractHardwarePort() -> String {
-        self.trimmingCharacters(in: .whitespaces)
+        trimmingCharacters(in: .whitespaces)
             .replacingOccurrences(of: "(Hardware Port:", with: "")
             .trimmingCharacters(in: .whitespaces)
     }
 
     func extractDevice() -> String {
-        self.trimmingCharacters(in: .whitespaces)
+        trimmingCharacters(in: .whitespaces)
             .replacingOccurrences(of: "Device:", with: "")
             .trimmingCharacters(in: .whitespaces)
     }

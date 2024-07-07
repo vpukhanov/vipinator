@@ -50,7 +50,10 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
 
         menu.addItem(.separator())
 
-        launchAtLoginMenuItem = NSMenuItem(title: "Start at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
+        launchAtLoginMenuItem = NSMenuItem(
+            title: "Start at Login",
+            action: #selector(toggleLaunchAtLogin),
+            keyEquivalent: "")
         launchAtLoginMenuItem?.target = self
         launchAtLoginMenuItem?.state = SMAppService.mainApp.status == .enabled ? .on : .off
         menu.addItem(launchAtLoginMenuItem!)
@@ -62,7 +65,7 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
         menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
     }
 
-    func menuWillOpen(_ menu: NSMenu) {
+    func menuWillOpen(_: NSMenu) {
         Task {
             await loadVPNConnections()
             rebuildMenu()
@@ -178,7 +181,9 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
             do {
                 let status = try await VPNManager.getStatus(for: vpn)
 
-                if let menuItem = statusItemManager.statusItem?.menu?.items.first(where: { ($0.representedObject as? VPNConnection)?.name == vpn.name }) {
+                if let menuItem = statusItemManager.statusItem?.menu?.items.first(
+                    where: { ($0.representedObject as? VPNConnection)?.name == vpn.name }
+                ) {
                     await updateMenuItem(menuItem, for: vpn)
                 }
 

@@ -28,7 +28,10 @@ class VPNStatusItemManager {
         let imageName = isConnected ? "bolt.horizontal.fill" : "bolt.horizontal"
         let accessibilityDescription = isConnected ? "VPN Connected" : "VPN Disconnected"
 
-        statusItem?.button?.image = NSImage(systemSymbolName: imageName, accessibilityDescription: accessibilityDescription)
+        statusItem?.button?.image = NSImage(
+            systemSymbolName: imageName,
+            accessibilityDescription: accessibilityDescription
+        )
         statusItem?.button?.image?.isTemplate = true
     }
 }
