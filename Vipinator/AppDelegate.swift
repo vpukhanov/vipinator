@@ -75,7 +75,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         menu.addItem(NSMenuItem.separator())
+        
+        // Add About and Quit menu items
+        menu.addItem(NSMenuItem(title: "About Vipinator", action: #selector(showAboutPanel), keyEquivalent: ""))
         menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+    }
+    
+    @objc func showAboutPanel() {
+        NSApplication.shared.orderFrontStandardAboutPanel(nil)
     }
     
     func updateMenuItem(_ menuItem: NSMenuItem, with status: VPNStatus) {
