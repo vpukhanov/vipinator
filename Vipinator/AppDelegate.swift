@@ -13,14 +13,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         createStatusItem()
+        loadVPNConnections()
         setupMenu()
+        updateStatusItemIcon()
     }
 
     func createStatusItem() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         
         if let button = statusItem?.button {
-            button.image = NSImage(systemSymbolName: "network", accessibilityDescription: "VPN")
+            button.image = NSImage(systemSymbolName: "network.slash", accessibilityDescription: "VPN")
             button.image?.isTemplate = true
         }
     }
@@ -28,6 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func loadVPNConnections() {
         vpnConnections = VPNManager.getAvailableVPNs()
         print("Loaded \(vpnConnections.count) network connections")
+        updateStatusItemIcon()
     }
 
     func setupMenu() {
@@ -54,6 +57,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 guard let self = self else { return }
                 self.vpnConnections[index].status = status
                 self.updateMenuItem(menuItem, with: status)
+                self.updateStatusItemIcon()
             }
         }
         
@@ -66,12 +70,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         case .connected:
             menuItem.state = .on
             menuItem.isEnabled = true
-        case .connecting, .disconnecting:
-            menuItem.state = .mixed
-            menuItem.isEnabled = true
         case .disconnected:
             menuItem.state = .off
             menuItem.isEnabled = true
+        case .connecting, .disconnecting:
+            menuItem.state = .mixed
+            menuItem.isEnabled = false
         case .invalid:
             menuItem.state = .off
             menuItem.isEnabled = false
@@ -88,10 +92,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             switch currentStatus {
             case .connected:
                 self.disconnectVPN(vpn)
-            case .disconnected, .invalid:
+            case .disconnected:
                 self.connectVPN(vpn)
-            case .connecting, .disconnecting:
-                print("VPN is already in transition: \(vpn.name)")
+            case .connecting, .disconnecting, .invalid:
+                print("VPN is in transition or invalid state: \(vpn.name)")
             }
         }
     }
@@ -142,6 +146,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
         print("VPN \(vpn.name) status updated to: \(newStatus)")
+        updateStatusItemIcon()
+    }
+    
+    func updateStatusItemIcon() {
+        let isAnyVPNConnectedOrConnecting = vpnConnections.contains { $0.status == .connected || $0.status == .connecting }
+        let imageName = isAnyVPNConnectedOrConnecting ? "network" : "network.slash"
+        
+        if let button = statusItem?.button {
+            button.image = NSImage(systemSymbolName: imageName, accessibilityDescription: "VPN")
+            button.image?.isTemplate = true
+        }
     }
 }
 
