@@ -54,6 +54,15 @@ class VPNManager {
         }
     }
     
+    static func getStatusAsync(for connection: VPNConnection, completion: @escaping (VPNStatus) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let status = getStatus(for: connection)
+            DispatchQueue.main.async {
+                completion(status)
+            }
+        }
+    }
+    
     static func getAvailableVPNs() -> [VPNConnection] {
         let task = Process()
         task.launchPath = "/usr/sbin/networksetup"
@@ -82,16 +91,14 @@ class VPNManager {
         task.waitUntilExit()
         
         if let output = String(data: data, encoding: .utf8) {
-            var connections = parseNetworkServices(output)
-            for i in 0..<connections.count {
-                connections[i].status = getStatus(for: connections[i])
-            }
-            return connections
+            return parseNetworkServices(output)
         } else {
             print("Failed to decode networksetup command output")
             return []
         }
     }
+    
+    private static let excludedServices = ["Wi-Fi", "Bluetooth PAN", "Thunderbolt Bridge"]
     
     private static func parseNetworkServices(_ output: String) -> [VPNConnection] {
         var vpnConnections: [VPNConnection] = []
@@ -103,8 +110,8 @@ class VPNManager {
         
         for line in lines {
             if line.matches(regex: "^\\(\\d+\\)") {
-                if let name = currentName, let hardwarePort = currentHardwarePort {
-                    let connection = VPNConnection(name: name, hardwarePort: hardwarePort, device: currentDevice ?? "")
+                if let name = currentName, let hardwarePort = currentHardwarePort, !excludedServices.contains(name) {
+                    let connection = VPNConnection(name: name, hardwarePort: hardwarePort, device: currentDevice ?? "", status: .disconnected)
                     vpnConnections.append(connection)
                 }
                 currentName = line.trimmingCharacters(in: .whitespaces)
@@ -122,9 +129,9 @@ class VPNManager {
             }
         }
         
-        // Add the last VPN connection if exists
-        if let name = currentName, let hardwarePort = currentHardwarePort {
-            let connection = VPNConnection(name: name, hardwarePort: hardwarePort, device: currentDevice ?? "")
+        // Add the last VPN connection if exists and is not excluded
+        if let name = currentName, let hardwarePort = currentHardwarePort, !excludedServices.contains(name) {
+            let connection = VPNConnection(name: name, hardwarePort: hardwarePort, device: currentDevice ?? "", status: .disconnected)
             vpnConnections.append(connection)
         }
         

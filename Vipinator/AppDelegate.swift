@@ -41,31 +41,51 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         menu.removeAllItems()
         
-        for vpn in vpnConnections where vpn.status != .invalid {
+        for (index, vpn) in vpnConnections.enumerated() {
             let menuItem = NSMenuItem(title: vpn.name, action: #selector(vpnItemClicked(_:)), keyEquivalent: "")
             menuItem.representedObject = vpn
-            
-            // Add a status indicator
-            switch vpn.status {
-            case .connected:
-                menuItem.state = .on
-            case .connecting, .disconnecting:
-                menuItem.state = .mixed
-            case .disconnected, .invalid:
-                menuItem.state = .off
-            }
-            
             menu.addItem(menuItem)
+            
+            // Set initial state as disabled
+            menuItem.isEnabled = false
+            
+            // Fetch status asynchronously
+            VPNManager.getStatusAsync(for: vpn) { [weak self] status in
+                guard let self = self else { return }
+                self.vpnConnections[index].status = status
+                self.updateMenuItem(menuItem, with: status)
+            }
         }
         
         menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
     }
+    
+    func updateMenuItem(_ menuItem: NSMenuItem, with status: VPNStatus) {
+        switch status {
+        case .connected:
+            menuItem.state = .on
+            menuItem.isEnabled = true
+        case .connecting, .disconnecting:
+            menuItem.state = .mixed
+            menuItem.isEnabled = true
+        case .disconnected:
+            menuItem.state = .off
+            menuItem.isEnabled = true
+        case .invalid:
+            menuItem.state = .off
+            menuItem.isEnabled = false
+        }
+    }
 
     @objc func vpnItemClicked(_ sender: NSMenuItem) {
         guard let vpn = sender.representedObject as? VPNConnection else { return }
-        print("VPN clicked: \(vpn.name), Current status: \(vpn.status.rawValue)")
-        // TODO: logic to connect/disconnect the VPN
+        if vpn.status == .invalid {
+            print("VPN is invalid and cannot be activated: \(vpn.name)")
+        } else {
+            print("VPN clicked: \(vpn.name), Current status: \(vpn.status.rawValue)")
+            // TODO: logic to connect/disconnect the VPN
+        }
     }
 }
 
