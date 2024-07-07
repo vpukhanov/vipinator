@@ -6,16 +6,24 @@
 //
 
 import Cocoa
+import SystemConfiguration
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem?
     var vpnConnections: [VPNConnection] = []
+    var dynamicStoreCallback: SCDynamicStoreCallBack?
+    var dynamicStore: SCDynamicStore?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         createStatusItem()
         loadVPNConnections()
         setupMenu()
         updateInitialStatusItemIcon()
+        setupNetworkConfigurationObserver()
+    }
+
+    func applicationWillTerminate(_ aNotification: Notification) {
+        removeNetworkConfigurationObserver()
     }
 
     func createStatusItem() {
@@ -178,6 +186,87 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let button = statusItem?.button {
             button.image = NSImage(systemSymbolName: imageName, accessibilityDescription: "VPN")
             button.image?.isTemplate = true
+        }
+    }
+    
+    func setupNetworkConfigurationObserver() {
+        // Create a closure that can be used as a callback
+        dynamicStoreCallback = { (store: SCDynamicStore, changedKeys: CFArray, context: UnsafeMutableRawPointer?) in
+            let appDelegate = Unmanaged<AppDelegate>.fromOpaque(context!).takeUnretainedValue()
+            appDelegate.handleNetworkConfigurationChange()
+        }
+
+        var context = SCDynamicStoreContext(
+            version: 0,
+            info: UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()),
+            retain: nil,
+            release: nil,
+            copyDescription: nil
+        )
+
+        // Create the dynamic store
+        dynamicStore = SCDynamicStoreCreate(
+            nil,
+            "VPNMonitor" as CFString,
+            dynamicStoreCallback,
+            &context
+        )
+
+        guard let dynamicStore = dynamicStore else {
+            print("Failed to create dynamic store")
+            return
+        }
+
+        // Set up the keys we want to monitor
+        let keys = [
+            "State:/Network/Global/IPv4" as CFString,
+            "State:/Network/Global/IPv6" as CFString,
+            "State:/Network/Interface" as CFString,
+            "State:/Network/Service" as CFString
+        ]
+        SCDynamicStoreSetNotificationKeys(dynamicStore, keys as CFArray, nil)
+
+        // Add the dynamic store to the run loop
+        let runLoopSource = SCDynamicStoreCreateRunLoopSource(nil, dynamicStore, 0)
+        CFRunLoopAddSource(CFRunLoopGetMain(), runLoopSource, .defaultMode)
+    }
+
+    func removeNetworkConfigurationObserver() {
+        if let dynamicStore = dynamicStore {
+            let runLoopSource = SCDynamicStoreCreateRunLoopSource(nil, dynamicStore, 0)
+            CFRunLoopRemoveSource(CFRunLoopGetMain(), runLoopSource, .defaultMode)
+        }
+        dynamicStore = nil
+    }
+
+    func handleNetworkConfigurationChange() {
+        DispatchQueue.main.async { [weak self] in
+            print("Network configuration changed. Updating VPN statuses...")
+            self?.updateVPNStatuses()
+        }
+    }
+    
+    func updateVPNStatuses() {
+        let group = DispatchGroup()
+        
+        for (index, vpn) in vpnConnections.enumerated() {
+            group.enter()
+            VPNManager.getStatusAsync(for: vpn) { [weak self] status in
+                guard let self = self else { return }
+                if self.vpnConnections[index].status != status {
+                    self.vpnConnections[index].status = status
+                    if let menu = self.statusItem?.menu,
+                       let item = menu.items.first(where: { ($0.representedObject as? VPNConnection)?.name == vpn.name }) {
+                        self.updateMenuItem(item, with: status)
+                    }
+                    print("VPN \(vpn.name) status updated to: \(status)")
+                }
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: .main) { [weak self] in
+            self?.updateStatusItemIcon()
         }
     }
 }

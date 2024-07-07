@@ -12,6 +12,7 @@
 		11D04F1C2C3AE584002E665D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F1B2C3AE584002E665D /* main.swift */; };
 		11D04F1E2C3AE6E1002E665D /* VPNManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F1D2C3AE6E1002E665D /* VPNManager.swift */; };
 		11D04F212C3AE964002E665D /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F202C3AE964002E665D /* String+Extension.swift */; };
+		11D04F242C3AF710002E665D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D04F232C3AF710002E665D /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		11D04F1B2C3AE584002E665D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		11D04F1D2C3AE6E1002E665D /* VPNManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNManager.swift; sourceTree = "<group>"; };
 		11D04F202C3AE964002E665D /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		11D04F232C3AF710002E665D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +31,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11D04F242C3AF710002E665D /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +43,7 @@
 			children = (
 				11D04F0B2C3AE4E0002E665D /* Vipinator */,
 				11D04F0A2C3AE4E0002E665D /* Products */,
+				11D04F222C3AF710002E665D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -70,6 +74,14 @@
 				11D04F202C3AE964002E665D /* String+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		11D04F222C3AF710002E665D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				11D04F232C3AF710002E665D /* SystemConfiguration.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
