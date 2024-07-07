@@ -9,10 +9,12 @@
 /* Begin PBXBuildFile section */
 		11D04F0D2C3AE4E0002E665D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F0C2C3AE4E0002E665D /* AppDelegate.swift */; };
 		11D04F112C3AE4E1002E665D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11D04F102C3AE4E1002E665D /* Assets.xcassets */; };
-		11D04F1C2C3AE584002E665D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F1B2C3AE584002E665D /* main.swift */; };
 		11D04F1E2C3AE6E1002E665D /* VPNManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F1D2C3AE6E1002E665D /* VPNManager.swift */; };
-		11D04F212C3AE964002E665D /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F202C3AE964002E665D /* String+Extension.swift */; };
 		11D04F242C3AF710002E665D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D04F232C3AF710002E665D /* SystemConfiguration.framework */; };
+		11D04F262C3B0290002E665D /* VPNStatusItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F252C3B0290002E665D /* VPNStatusItemManager.swift */; };
+		11D04F282C3B02BD002E665D /* VPNMenuManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F272C3B02BD002E665D /* VPNMenuManager.swift */; };
+		11D04F2A2C3B0314002E665D /* NetworkConfigurationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F292C3B0314002E665D /* NetworkConfigurationObserver.swift */; };
+		11D04F2C2C3B0B20002E665D /* VipinatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F2B2C3B0B20002E665D /* VipinatorApp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,10 +22,12 @@
 		11D04F0C2C3AE4E0002E665D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		11D04F102C3AE4E1002E665D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		11D04F152C3AE4E1002E665D /* Vipinator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vipinator.entitlements; sourceTree = "<group>"; };
-		11D04F1B2C3AE584002E665D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		11D04F1D2C3AE6E1002E665D /* VPNManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNManager.swift; sourceTree = "<group>"; };
-		11D04F202C3AE964002E665D /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		11D04F232C3AF710002E665D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		11D04F252C3B0290002E665D /* VPNStatusItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNStatusItemManager.swift; sourceTree = "<group>"; };
+		11D04F272C3B02BD002E665D /* VPNMenuManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNMenuManager.swift; sourceTree = "<group>"; };
+		11D04F292C3B0314002E665D /* NetworkConfigurationObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfigurationObserver.swift; sourceTree = "<group>"; };
+		11D04F2B2C3B0B20002E665D /* VipinatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VipinatorApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,22 +62,16 @@
 		11D04F0B2C3AE4E0002E665D /* Vipinator */ = {
 			isa = PBXGroup;
 			children = (
-				11D04F1F2C3AE94D002E665D /* Extensions */,
 				11D04F0C2C3AE4E0002E665D /* AppDelegate.swift */,
 				11D04F1D2C3AE6E1002E665D /* VPNManager.swift */,
-				11D04F1B2C3AE584002E665D /* main.swift */,
 				11D04F102C3AE4E1002E665D /* Assets.xcassets */,
 				11D04F152C3AE4E1002E665D /* Vipinator.entitlements */,
+				11D04F252C3B0290002E665D /* VPNStatusItemManager.swift */,
+				11D04F272C3B02BD002E665D /* VPNMenuManager.swift */,
+				11D04F292C3B0314002E665D /* NetworkConfigurationObserver.swift */,
+				11D04F2B2C3B0B20002E665D /* VipinatorApp.swift */,
 			);
 			path = Vipinator;
-			sourceTree = "<group>";
-		};
-		11D04F1F2C3AE94D002E665D /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				11D04F202C3AE964002E665D /* String+Extension.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		11D04F222C3AF710002E665D /* Frameworks */ = {
@@ -153,10 +151,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11D04F212C3AE964002E665D /* String+Extension.swift in Sources */,
-				11D04F1C2C3AE584002E665D /* main.swift in Sources */,
 				11D04F1E2C3AE6E1002E665D /* VPNManager.swift in Sources */,
+				11D04F282C3B02BD002E665D /* VPNMenuManager.swift in Sources */,
+				11D04F2C2C3B0B20002E665D /* VipinatorApp.swift in Sources */,
+				11D04F2A2C3B0314002E665D /* NetworkConfigurationObserver.swift in Sources */,
 				11D04F0D2C3AE4E0002E665D /* AppDelegate.swift in Sources */,
+				11D04F262C3B0290002E665D /* VPNStatusItemManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +300,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.pukhanov.Vipinator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -327,6 +328,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.pukhanov.Vipinator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
