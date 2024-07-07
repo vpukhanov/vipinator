@@ -13,7 +13,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         createStatusItem()
-        loadVPNConnections()
         setupMenu()
     }
 
@@ -33,6 +32,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func setupMenu() {
         let menu = NSMenu()
+        menu.delegate = self
+        statusItem?.menu = menu
+    }
+
+    func rebuildMenu() {
+        guard let menu = statusItem?.menu else { return }
+        
+        menu.removeAllItems()
         
         for vpn in vpnConnections {
             menu.addItem(NSMenuItem(title: vpn.name, action: #selector(vpnItemClicked(_:)), keyEquivalent: ""))
@@ -40,12 +47,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
-        
-        statusItem?.menu = menu
     }
 
     @objc func vpnItemClicked(_ sender: NSMenuItem) {
         print("VPN clicked: \(sender.title)")
         // TODO: logic to connect/disconnect the VPN
+    }
+}
+
+extension AppDelegate: NSMenuDelegate {
+    func menuWillOpen(_ menu: NSMenu) {
+        loadVPNConnections()
+        rebuildMenu()
     }
 }
