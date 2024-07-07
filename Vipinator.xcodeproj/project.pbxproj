@@ -28,6 +28,8 @@
 		11D04F272C3B02BD002E665D /* VPNMenuManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNMenuManager.swift; sourceTree = "<group>"; };
 		11D04F292C3B0314002E665D /* NetworkConfigurationObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfigurationObserver.swift; sourceTree = "<group>"; };
 		11D04F2B2C3B0B20002E665D /* VipinatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VipinatorApp.swift; sourceTree = "<group>"; };
+		11D04F322C3B0FA3002E665D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		11D04F332C3B109E002E665D /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +47,8 @@
 		11D04F002C3AE4E0002E665D = {
 			isa = PBXGroup;
 			children = (
+				11D04F322C3B0FA3002E665D /* README.md */,
+				11D04F332C3B109E002E665D /* LICENSE.md */,
 				11D04F0B2C3AE4E0002E665D /* Vipinator */,
 				11D04F2D2C3B0D6F002E665D /* Supporting Files */,
 				11D04F0A2C3AE4E0002E665D /* Products */,
@@ -334,7 +338,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "2024 Vyacheslav Pukhanov, MIT License";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2024 Vyacheslav Pukhanov. MIT License.";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -362,7 +366,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "2024 Vyacheslav Pukhanov, MIT License";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2024 Vyacheslav Pukhanov. MIT License.";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
