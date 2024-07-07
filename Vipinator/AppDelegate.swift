@@ -7,12 +7,14 @@
 
 import Cocoa
 import SystemConfiguration
+import ServiceManagement
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem?
     var vpnConnections: [VPNConnection] = []
     var dynamicStoreCallback: SCDynamicStoreCallBack?
     var dynamicStore: SCDynamicStore?
+    var launchAtLoginMenuItem: NSMenuItem?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         createStatusItem()
@@ -76,6 +78,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         menu.addItem(NSMenuItem.separator())
         
+        // Add Launch at Login menu item
+        launchAtLoginMenuItem = NSMenuItem(title: "Start at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
+        launchAtLoginMenuItem?.state = isLaunchAtLoginEnabled() ? .on : .off
+        menu.addItem(launchAtLoginMenuItem!)
+        
         // Add About and Quit menu items
         menu.addItem(NSMenuItem(title: "About Vipinator", action: #selector(showAboutPanel), keyEquivalent: ""))
         menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
@@ -83,6 +90,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @objc func showAboutPanel() {
         NSApplication.shared.orderFrontStandardAboutPanel(nil)
+    }
+    
+    @objc func toggleLaunchAtLogin() {
+        let currentStatus = SMAppService.mainApp.status
+        
+        do {
+            if currentStatus == .enabled {
+                try SMAppService.mainApp.unregister()
+            } else {
+                try SMAppService.mainApp.register()
+            }
+            launchAtLoginMenuItem?.state = isLaunchAtLoginEnabled() ? .on : .off
+        } catch {
+            print("Failed to toggle launch at login: \(error)")
+            // Optionally, show an alert to the user about the failure
+        }
+    }
+
+    func isLaunchAtLoginEnabled() -> Bool {
+        return SMAppService.mainApp.status == .enabled
     }
     
     func updateMenuItem(_ menuItem: NSMenuItem, with status: VPNStatus) {
