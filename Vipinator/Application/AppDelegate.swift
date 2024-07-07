@@ -17,7 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             statusItemManager = VPNStatusItemManager()
             menuManager = VPNMenuManager(statusItemManager: statusItemManager)
             networkObserver = NetworkConfigurationObserver(handler: handleNetworkConfigurationChange)
-            
+
             await menuManager.loadVPNConnections()
             menuManager.rebuildMenu()
             await menuManager.updateVPNStatuses()
@@ -27,7 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ aNotification: Notification) {
         networkObserver.stopObserving()
     }
-    
+
     private func handleNetworkConfigurationChange() {
         Task { @MainActor in
             await menuManager.updateVPNStatuses()

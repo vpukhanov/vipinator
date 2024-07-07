@@ -13,7 +13,7 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
     private let statusItemManager: VPNStatusItemManager
     private var vpnConnections: [VPNConnection] = []
     private var launchAtLoginMenuItem: NSMenuItem?
-    
+
     init(statusItemManager: VPNStatusItemManager) {
         self.statusItemManager = statusItemManager
         super.init()
@@ -25,40 +25,40 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
         menu.delegate = self
         statusItemManager.statusItem?.menu = menu
     }
-    
+
     func rebuildMenu() {
         guard let menu = statusItemManager.statusItem?.menu else { return }
-        
+
         menu.removeAllItems()
-        
+
         for (index, vpn) in vpnConnections.enumerated() {
             let shortcut = index < 9 ? "\(index + 1)" : (index == 9 ? "0" : "")
             let menuItem = NSMenuItem(title: vpn.name, action: #selector(vpnItemClicked(_:)), keyEquivalent: shortcut)
-            
+
             if !shortcut.isEmpty {
                 menuItem.keyEquivalentModifierMask = .command
             }
-            
+
             menuItem.target = self
             menuItem.representedObject = vpn
             menu.addItem(menuItem)
-            
+
             Task {
                 await updateMenuItem(menuItem, for: vpn)
             }
         }
-        
+
         menu.addItem(.separator())
-        
+
         launchAtLoginMenuItem = NSMenuItem(title: "Start at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
         launchAtLoginMenuItem?.target = self
         launchAtLoginMenuItem?.state = SMAppService.mainApp.status == .enabled ? .on : .off
         menu.addItem(launchAtLoginMenuItem!)
-        
+
         let aboutItem = NSMenuItem(title: "About Vipinator", action: #selector(showAboutPanel), keyEquivalent: "")
         aboutItem.target = self
         menu.addItem(aboutItem)
-        
+
         menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
     }
 
@@ -68,10 +68,10 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
             rebuildMenu()
         }
     }
-    
+
     @objc private func vpnItemClicked(_ sender: NSMenuItem) {
         guard let vpn = sender.representedObject as? VPNConnection else { return }
-        
+
         Task {
             do {
                 let currentStatus = try await VPNManager.getStatus(for: vpn)
@@ -88,12 +88,12 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
             }
         }
     }
-    
+
     @objc private func toggleLaunchAtLogin() {
         Task {
             do {
                 let shouldEnable = SMAppService.mainApp.status != .enabled
-                
+
                 try await Task.detached {
                     if shouldEnable {
                         try SMAppService.mainApp.register()
@@ -101,7 +101,7 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
                         try SMAppService.mainApp.unregister()
                     }
                 }.value
-                
+
                 await MainActor.run {
                     launchAtLoginMenuItem?.state = SMAppService.mainApp.status == .enabled ? .on : .off
                 }
@@ -110,7 +110,7 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
             }
         }
     }
-    
+
     @objc private func showAboutPanel() {
         NSApplication.shared.orderFrontStandardAboutPanel(nil)
     }
@@ -138,7 +138,7 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
             print("Error updating menu item for \(vpn.name): \(error)")
         }
     }
-    
+
     func loadVPNConnections() async {
         do {
             vpnConnections = try await VPNManager.getAvailableVPNs()
@@ -146,7 +146,7 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
             print("Error loading VPN connections: \(error)")
         }
     }
-    
+
     private func connectVPN(_ vpn: VPNConnection) async {
         do {
             let success = try await VPNManager.connect(to: vpn)
@@ -171,18 +171,17 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
         }
     }
 
-    
     func updateVPNStatuses() async {
         var isAnyVPNConnected = false
-        
+
         for vpn in vpnConnections {
             do {
                 let status = try await VPNManager.getStatus(for: vpn)
-                
+
                 if let menuItem = statusItemManager.statusItem?.menu?.items.first(where: { ($0.representedObject as? VPNConnection)?.name == vpn.name }) {
                     await updateMenuItem(menuItem, for: vpn)
                 }
-                
+
                 if status == .connected || status == .connecting {
                     isAnyVPNConnected = true
                 }
@@ -190,7 +189,7 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
                 print("Error updating status for VPN \(vpn.name): \(error)")
             }
         }
-        
+
         statusItemManager.updateIcon(isConnected: isAnyVPNConnected)
     }
 }

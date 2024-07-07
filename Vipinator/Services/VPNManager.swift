@@ -21,12 +21,12 @@ struct VPNConnection: Identifiable, Equatable {
 
 final class VPNManager {
     private static let excludedServices = ["Wi-Fi", "Bluetooth PAN", "Thunderbolt Bridge"]
-    
+
     static func getAvailableVPNs() async throws -> [VPNConnection] {
         let output = try await runNetworkSetupCommand(arguments: ["-listnetworkserviceorder"])
         return parseNetworkServices(output)
     }
-    
+
     static func getStatus(for connection: VPNConnection) async throws -> VPNStatus {
         let output = try await runNetworkSetupCommand(arguments: ["-showpppoestatus", connection.name])
         return parseStatus(from: output)
@@ -39,7 +39,7 @@ final class VPNManager {
         let finalStatus = try await getStatus(for: connection)
         return (initialStatus != .connected) && (finalStatus == .connected)
     }
-    
+
     static func disconnect(from connection: VPNConnection) async throws -> Bool {
         let initialStatus = try await getStatus(for: connection)
         _ = try await runNetworkSetupCommand(arguments: ["-disconnectpppoeservice", connection.name])
@@ -47,35 +47,39 @@ final class VPNManager {
         let finalStatus = try await getStatus(for: connection)
         return (initialStatus == .connected) && (finalStatus != .connected)
     }
-    
+
     private static func runNetworkSetupCommand(arguments: [String]) async throws -> String {
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/sbin/networksetup")
         process.arguments = arguments
-        
+
         let outputPipe = Pipe()
         let errorPipe = Pipe()
         process.standardOutput = outputPipe
         process.standardError = errorPipe
-        
+
         try process.run()
         process.waitUntilExit()
-        
+
         let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
         let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-        
-        if let output = String(data: outputData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) {
+
+        let output = String(decoding: outputData, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
+        if !output.isEmpty {
             return output
-        } else if let errorOutput = String(data: errorData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) {
-            throw VPNError.commandError(errorOutput)
-        } else {
-            throw VPNError.commandOutputDecodingFailed
         }
+
+        let errorOutput = String(decoding: errorData, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
+        if !errorOutput.isEmpty {
+            throw VPNError.commandError(errorOutput)
+        }
+
+        throw VPNError.commandOutputDecodingFailed
     }
-    
+
     private static func parseStatus(from output: String) -> VPNStatus {
         let lowercasedOutput = output.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        
+
         switch lowercasedOutput {
         case "connected":
             return .connected
@@ -89,12 +93,12 @@ final class VPNManager {
             return .invalid
         }
     }
-    
+
     private static func parseNetworkServices(_ output: String) -> [VPNConnection] {
         let lines = output.components(separatedBy: .newlines)
         var vpnConnections: [VPNConnection] = []
-        var currentConnection: (name: String?, hardwarePort: String?, device: String?) = (nil, nil, nil)
-        
+        var currentConnection = NetworkServiceInfo()
+
         for line in lines {
             if line.matches(regex: "^\\(\\d+\\)") {
                 if let name = currentConnection.name,
@@ -113,14 +117,20 @@ final class VPNManager {
                 }
             }
         }
-        
+
         if let name = currentConnection.name,
            let hardwarePort = currentConnection.hardwarePort,
            !excludedServices.contains(name) {
             vpnConnections.append(VPNConnection(name: name, hardwarePort: hardwarePort, device: currentConnection.device ?? ""))
         }
-        
+
         return vpnConnections
+    }
+
+    private struct NetworkServiceInfo {
+        var name: String?
+        var hardwarePort: String?
+        var device: String?
     }
 }
 
@@ -135,13 +145,13 @@ private extension String {
             .replacingOccurrences(of: "^\\(\\d+\\)\\s*", with: "", options: .regularExpression)
             .trimmingCharacters(in: .whitespaces)
     }
-    
+
     func extractHardwarePort() -> String {
         self.trimmingCharacters(in: .whitespaces)
             .replacingOccurrences(of: "(Hardware Port:", with: "")
             .trimmingCharacters(in: .whitespaces)
     }
-    
+
     func extractDevice() -> String {
         self.trimmingCharacters(in: .whitespaces)
             .replacingOccurrences(of: "Device:", with: "")
