@@ -7,13 +7,53 @@
 
 import Foundation
 
+enum VPNStatus: String {
+    case connected
+    case connecting
+    case disconnecting
+    case disconnected
+    case invalid
+}
+
 struct VPNConnection {
     let name: String
     let hardwarePort: String
     let device: String
+    var status: VPNStatus = .disconnected
 }
 
 class VPNManager {
+    static func getStatus(for connection: VPNConnection) -> VPNStatus {
+        let task = Process()
+        task.launchPath = "/usr/sbin/networksetup"
+        task.arguments = ["-showpppoestatus", connection.name]
+        
+        let pipe = Pipe()
+        task.standardOutput = pipe
+        
+        do {
+            try task.run()
+        } catch {
+            print("Failed to run networksetup command for status: \(error)")
+            return .invalid
+        }
+        
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        task.waitUntilExit()
+        
+        guard let output = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() else {
+            return .invalid
+        }
+        
+        switch output {
+        case "connected": return .connected
+        case "connecting": return .connecting
+        case "disconnecting": return .disconnecting
+        case "disconnected": return .disconnected
+        default: return .invalid
+        }
+    }
+    
     static func getAvailableVPNs() -> [VPNConnection] {
         let task = Process()
         task.launchPath = "/usr/sbin/networksetup"
@@ -42,7 +82,11 @@ class VPNManager {
         task.waitUntilExit()
         
         if let output = String(data: data, encoding: .utf8) {
-            return parseNetworkServices(output)
+            var connections = parseNetworkServices(output)
+            for i in 0..<connections.count {
+                connections[i].status = getStatus(for: connections[i])
+            }
+            return connections
         } else {
             print("Failed to decode networksetup command output")
             return []

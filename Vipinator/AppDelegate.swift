@@ -41,8 +41,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         menu.removeAllItems()
         
-        for vpn in vpnConnections {
-            menu.addItem(NSMenuItem(title: vpn.name, action: #selector(vpnItemClicked(_:)), keyEquivalent: ""))
+        for vpn in vpnConnections where vpn.status != .invalid {
+            let menuItem = NSMenuItem(title: vpn.name, action: #selector(vpnItemClicked(_:)), keyEquivalent: "")
+            menuItem.representedObject = vpn
+            
+            // Add a status indicator
+            switch vpn.status {
+            case .connected:
+                menuItem.state = .on
+            case .connecting, .disconnecting:
+                menuItem.state = .mixed
+            case .disconnected, .invalid:
+                menuItem.state = .off
+            }
+            
+            menu.addItem(menuItem)
         }
         
         menu.addItem(NSMenuItem.separator())
@@ -50,7 +63,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc func vpnItemClicked(_ sender: NSMenuItem) {
-        print("VPN clicked: \(sender.title)")
+        guard let vpn = sender.representedObject as? VPNConnection else { return }
+        print("VPN clicked: \(vpn.name), Current status: \(vpn.status.rawValue)")
         // TODO: logic to connect/disconnect the VPN
     }
 }
