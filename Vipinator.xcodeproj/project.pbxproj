@@ -46,6 +46,7 @@
 			isa = PBXGroup;
 			children = (
 				11D04F0B2C3AE4E0002E665D /* Vipinator */,
+				11D04F2D2C3B0D6F002E665D /* Supporting Files */,
 				11D04F0A2C3AE4E0002E665D /* Products */,
 				11D04F222C3AF710002E665D /* Frameworks */,
 			);
@@ -62,14 +63,10 @@
 		11D04F0B2C3AE4E0002E665D /* Vipinator */ = {
 			isa = PBXGroup;
 			children = (
-				11D04F0C2C3AE4E0002E665D /* AppDelegate.swift */,
-				11D04F1D2C3AE6E1002E665D /* VPNManager.swift */,
-				11D04F102C3AE4E1002E665D /* Assets.xcassets */,
-				11D04F152C3AE4E1002E665D /* Vipinator.entitlements */,
-				11D04F252C3B0290002E665D /* VPNStatusItemManager.swift */,
-				11D04F272C3B02BD002E665D /* VPNMenuManager.swift */,
-				11D04F292C3B0314002E665D /* NetworkConfigurationObserver.swift */,
-				11D04F2B2C3B0B20002E665D /* VipinatorApp.swift */,
+				11D04F2E2C3B0D89002E665D /* Application */,
+				11D04F2F2C3B0D97002E665D /* Services */,
+				11D04F302C3B0DAD002E665D /* UI */,
+				11D04F312C3B0DBE002E665D /* Resources */,
 			);
 			path = Vipinator;
 			sourceTree = "<group>";
@@ -80,6 +77,49 @@
 				11D04F232C3AF710002E665D /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		11D04F2D2C3B0D6F002E665D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				11D04F152C3AE4E1002E665D /* Vipinator.entitlements */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		11D04F2E2C3B0D89002E665D /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				11D04F2B2C3B0B20002E665D /* VipinatorApp.swift */,
+				11D04F0C2C3AE4E0002E665D /* AppDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		11D04F2F2C3B0D97002E665D /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				11D04F1D2C3AE6E1002E665D /* VPNManager.swift */,
+				11D04F292C3B0314002E665D /* NetworkConfigurationObserver.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		11D04F302C3B0DAD002E665D /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				11D04F252C3B0290002E665D /* VPNStatusItemManager.swift */,
+				11D04F272C3B02BD002E665D /* VPNMenuManager.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		11D04F312C3B0DBE002E665D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				11D04F102C3AE4E1002E665D /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -286,7 +326,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Vipinator/Vipinator.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Supporting Files/Vipinator.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -314,7 +354,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Vipinator/Vipinator.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Supporting Files/Vipinator.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
