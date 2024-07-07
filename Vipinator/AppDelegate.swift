@@ -15,7 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         createStatusItem()
         loadVPNConnections()
         setupMenu()
-        updateStatusItemIcon()
+        updateInitialStatusItemIcon()
     }
 
     func createStatusItem() {
@@ -30,7 +30,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func loadVPNConnections() {
         vpnConnections = VPNManager.getAvailableVPNs()
         print("Loaded \(vpnConnections.count) network connections")
-        updateStatusItemIcon()
     }
 
     func setupMenu() {
@@ -153,6 +152,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         print("VPN \(vpn.name) status updated to: \(newStatus)")
         updateStatusItemIcon()
+    }
+    
+    func updateInitialStatusItemIcon() {
+        let group = DispatchGroup()
+        
+        for (index, vpn) in vpnConnections.enumerated() {
+            group.enter()
+            VPNManager.getStatusAsync(for: vpn) { [weak self] status in
+                guard let self = self else { return }
+                self.vpnConnections[index].status = status
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: .main) { [weak self] in
+            self?.updateStatusItemIcon()
+        }
     }
     
     func updateStatusItemIcon() {
