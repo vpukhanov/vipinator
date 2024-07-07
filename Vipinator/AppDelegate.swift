@@ -45,7 +45,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         menu.removeAllItems()
         
         for (index, vpn) in vpnConnections.enumerated() {
-            let menuItem = NSMenuItem(title: vpn.name, action: #selector(vpnItemClicked(_:)), keyEquivalent: "")
+            let shortcut = index < 9 ? "\(index + 1)" : (index == 9 ? "0" : "")
+            let menuItem = NSMenuItem(title: vpn.name, action: #selector(vpnItemClicked(_:)), keyEquivalent: shortcut)
+            
+            if !shortcut.isEmpty {
+                menuItem.keyEquivalentModifierMask = .command
+            }
+            
             menuItem.representedObject = vpn
             menu.addItem(menuItem)
             
