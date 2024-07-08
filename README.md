@@ -13,6 +13,22 @@ Vipinator is a macOS menu bar app that provides easy management of VPN connectio
 - Automatic status updates when network configuration changes
 - Option to start the app at login
 
+## Installation
+
+There are two ways to install Vipinator:
+
+### Using Homebrew
+
+```sh
+brew install --cask vpukhanov/tools/vipinator
+```
+
+### Manual Installation
+
+- Download the latest DMG file from the [releases page](https://github.com/vpukhanov/Vipinator/releases/latest)
+- Open the DMG file
+- Drag the Vipinator app to your Applications folder
+
 ## Demonstration
 
 https://github.com/vpukhanov/Vipinator/assets/1694616/997df21d-6957-47ad-a938-184e2d4f08e8
@@ -38,4 +54,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Support
 
-If you encounter any problems or have any questions, please [open an issue](https://github.com/vpukhanov/vipinator/issues).
+If you encounter any problems or have any questions, please [open an issue](https://github.com/vpukhanov/Vipinator/issues).
