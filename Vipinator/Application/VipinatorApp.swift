@@ -15,5 +15,8 @@ struct VipinatorApp: App {
         Settings {
             EmptyView()
         }
+        .commands {
+            CommandGroup(replacing: .newItem) {}
+        }
     }
 }
