@@ -15,13 +15,10 @@ struct VPNConnection: Identifiable, Equatable {
     let id = UUID()
     let name: String
     let hardwarePort: String
-    let device: String
     var status: VPNStatus = .disconnected
 }
 
 enum VPNManager {
-    private static let excludedServices = ["Wi-Fi", "Bluetooth PAN", "Thunderbolt Bridge"]
-
     static func getAvailableVPNs() async throws -> [VPNConnection] {
         let output = try await runNetworkSetupCommand(arguments: ["-listnetworkserviceorder"])
         return parseNetworkServices(output)
@@ -103,9 +100,10 @@ enum VPNManager {
             if line.matches(regex: "^\\(\\d+\\)") {
                 if let name = currentConnection.name,
                    let hardwarePort = currentConnection.hardwarePort,
-                   !excludedServices.contains(name) {
+                   let device = currentConnection.device,
+                   device.isEmpty {
                     vpnConnections.append(
-                        VPNConnection(name: name, hardwarePort: hardwarePort, device: currentConnection.device ?? "")
+                        VPNConnection(name: name, hardwarePort: hardwarePort)
                     )
                 }
                 currentConnection.name = line.extractName()
@@ -122,9 +120,10 @@ enum VPNManager {
 
         if let name = currentConnection.name,
            let hardwarePort = currentConnection.hardwarePort,
-           !excludedServices.contains(name) {
+           let device = currentConnection.device,
+           device.isEmpty {
             vpnConnections.append(
-                VPNConnection(name: name, hardwarePort: hardwarePort, device: currentConnection.device ?? "")
+                VPNConnection(name: name, hardwarePort: hardwarePort)
             )
         }
 
@@ -159,6 +158,7 @@ private extension String {
     func extractDevice() -> String {
         trimmingCharacters(in: .whitespaces)
             .replacingOccurrences(of: "Device:", with: "")
+            .replacingOccurrences(of: "\\)$", with: "", options: .regularExpression)
             .trimmingCharacters(in: .whitespaces)
     }
 }
