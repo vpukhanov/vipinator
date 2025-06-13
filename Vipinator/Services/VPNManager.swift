@@ -31,7 +31,7 @@ enum VPNManager {
 
     static func connect(to connection: VPNConnection) async throws -> Bool {
         let initialStatus = try await getStatus(for: connection)
-        _ = try await runNetworkSetupCommand(arguments: ["-connectpppoeservice", connection.name])
+        _ = try await runNetworkSetupCommand(arguments: ["-connectpppoeservice", connection.name], allowEmptyOutput: true)
         try await Task.sleep(for: .seconds(2))
         let finalStatus = try await getStatus(for: connection)
         return (initialStatus != .connected) && (finalStatus == .connected)
@@ -39,13 +39,13 @@ enum VPNManager {
 
     static func disconnect(from connection: VPNConnection) async throws -> Bool {
         let initialStatus = try await getStatus(for: connection)
-        _ = try await runNetworkSetupCommand(arguments: ["-disconnectpppoeservice", connection.name])
+        _ = try await runNetworkSetupCommand(arguments: ["-disconnectpppoeservice", connection.name], allowEmptyOutput: true)
         try await Task.sleep(for: .seconds(2))
         let finalStatus = try await getStatus(for: connection)
         return (initialStatus == .connected) && (finalStatus != .connected)
     }
 
-    private static func runNetworkSetupCommand(arguments: [String]) async throws -> String {
+    private static func runNetworkSetupCommand(arguments: [String], allowEmptyOutput: Bool = false) async throws -> String {
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/sbin/networksetup")
         process.arguments = arguments
@@ -71,7 +71,11 @@ enum VPNManager {
             throw VPNError.commandError(errorOutput)
         }
 
-        throw VPNError.commandOutputDecodingFailed
+        if !allowEmptyOutput {
+            throw VPNError.commandOutputDecodingFailed
+        }
+
+        return ""
     }
 
     private static func parseStatus(from output: String) -> VPNStatus {
