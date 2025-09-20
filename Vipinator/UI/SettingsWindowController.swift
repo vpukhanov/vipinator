@@ -25,7 +25,8 @@ final class SettingsWindowController: NSWindowController {
 
         win.titleVisibility = .visible
         win.titlebarAppearsTransparent = true
-        if #available(macOS 11.0, *) { win.toolbarStyle = .preference }
+        win.toolbarStyle = .preference
+
         // Keep a constant title ("Settings") regardless of tab changes
         titleObserver = NotificationCenter.default.addObserver(
             forName: NSWindow.didUpdateNotification,

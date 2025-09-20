@@ -58,13 +58,7 @@ final class GeneralSettingsViewController: NSViewController {
         switchControl.target = self
         switchControl.action = #selector(toggleOpenAtLogin)
 
-        if #available(macOS 13.0, *) {
-            switchControl.state = isOpenAtLoginEnabled ? .on : .off
-        } else {
-            switchControl.state = .off
-            switchControl.isEnabled = false
-            footnote.stringValue = "Requires macOS 13 or later."
-        }
+        switchControl.state = isOpenAtLoginEnabled ? .on : .off
 
         separator.boxType = .separator
         separator.translatesAutoresizingMaskIntoConstraints = false
@@ -161,11 +155,10 @@ final class GeneralSettingsViewController: NSViewController {
     }
 
     private var isOpenAtLoginEnabled: Bool {
-        if #available(macOS 13.0, *) { SMAppService.mainApp.status == .enabled } else { false }
+        SMAppService.mainApp.status == .enabled
     }
 
     @objc private func toggleOpenAtLogin(_ sender: NSSwitch) {
-        guard #available(macOS 13.0, *) else { return }
         do {
             if sender.state == .on { try SMAppService.mainApp.register() }
             else { try SMAppService.mainApp.unregister() }
@@ -354,14 +347,9 @@ final class HotkeyRecordField: NSControl, NSGestureRecognizerDelegate {
         addSubview(label)
 
         clearButton.isBordered = false
-        if #available(macOS 11.0, *) {
-            clearButton.image = NSImage(systemSymbolName: "xmark.circle.fill", accessibilityDescription: "Clear")
-            clearButton.image?.isTemplate = true
-            clearButton.contentTintColor = .tertiaryLabelColor
-        } else {
-            clearButton.title = "×"
-            clearButton.font = .systemFont(ofSize: 14, weight: .regular)
-        }
+        clearButton.image = NSImage(systemSymbolName: "xmark.circle.fill", accessibilityDescription: "Clear")
+        clearButton.image?.isTemplate = true
+        clearButton.contentTintColor = .tertiaryLabelColor
         clearButton.target = self
         clearButton.action = #selector(clearTapped)
         clearButton.translatesAutoresizingMaskIntoConstraints = false
@@ -421,11 +409,7 @@ final class HotkeyRecordField: NSControl, NSGestureRecognizerDelegate {
         bg.layer?.borderWidth = 1.0
 
         label.textColor = .labelColor
-        if #available(macOS 10.14, *) {
-            clearButton.contentTintColor = .tertiaryLabelColor
-        } else {
-            clearButton.contentTintColor = nil
-        }
+        clearButton.contentTintColor = .tertiaryLabelColor
     }
 
     override func viewDidChangeEffectiveAppearance() {

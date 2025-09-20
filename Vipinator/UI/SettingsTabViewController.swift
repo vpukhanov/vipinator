@@ -13,11 +13,7 @@ final class SettingsTabViewController: NSTabViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if #available(macOS 13.0, *) {
-            tabStyle = .toolbar
-        } else {
-            tabStyle = .segmentedControlOnTop
-        }
+        tabStyle = .toolbar
 
         let general = GeneralSettingsViewController()
         general.title = "General"
@@ -32,20 +28,17 @@ final class SettingsTabViewController: NSTabViewController {
         addChild(personalization)
         addChild(about)
 
-        if tabViewItems.indices.contains(0) { tabViewItems[0].label = "General" }
-        if tabViewItems.indices.contains(1) { tabViewItems[1].label = "Appearance" }
-        if tabViewItems.indices.contains(2) { tabViewItems[2].label = "About" }
-
-        if #available(macOS 11.0, *) {
-            if tabViewItems.indices.contains(0) {
-                tabViewItems[0].image = NSImage(systemSymbolName: "gearshape", accessibilityDescription: "Settings")
-            }
-            if tabViewItems.indices.contains(1) {
-                tabViewItems[1].image = NSImage(systemSymbolName: "wand.and.sparkles", accessibilityDescription: "Appearance")
-            }
-            if tabViewItems.indices.contains(2) {
-                tabViewItems[2].image = NSImage(systemSymbolName: "info.circle", accessibilityDescription: "About")
-            }
+        if tabViewItems.indices.contains(0) {
+            tabViewItems[0].label = "General"
+            tabViewItems[0].image = NSImage(systemSymbolName: "gearshape", accessibilityDescription: "Settings")
+        }
+        if tabViewItems.indices.contains(1) {
+            tabViewItems[1].label = "Appearance"
+            tabViewItems[1].image = NSImage(systemSymbolName: "wand.and.sparkles", accessibilityDescription: "Appearance")
+        }
+        if tabViewItems.indices.contains(2) {
+            tabViewItems[2].label = "About"
+            tabViewItems[2].image = NSImage(systemSymbolName: "info.circle", accessibilityDescription: "About")
         }
     }
 }
