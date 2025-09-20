@@ -47,10 +47,10 @@ final class PersonalizationViewController: NSViewController {
     private let content = NSView()
     private var optionViews: [IconOptionView] = []
 
-    private let headerLabel = NSTextField(labelWithString: "Menubar icon")
+    private let headerLabel = NSTextField(labelWithString: "Menu Bar Icon")
     private let separator = NSBox()
 
-    private let subtitle = NSTextField(labelWithString: "Customize the appearance of the icon in the menubar.")
+    private let subtitle = NSTextField(labelWithString: "Choose the appearance of the icon in the menu bar")
 
     override func loadView() { view = NSView() }
 

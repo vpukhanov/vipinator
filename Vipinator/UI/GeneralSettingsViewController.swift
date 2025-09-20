@@ -11,17 +11,17 @@ final class GeneralSettingsViewController: NSViewController {
     private let container = NSVisualEffectView()
     private let content = NSView()
 
-    private let titleLabel = NSTextField(labelWithString: "Start at login")
+    private let titleLabel = NSTextField(labelWithString: "Open at Login")
     private let switchControl = NSSwitch()
-    private let footnote = NSTextField(labelWithString: "The app automatically starts when you sign in.")
+    private let footnote = NSTextField(labelWithString: "Launch Vipinator in the menu bar when you start your device")
     private let separator = NSBox()
 
     private let hkContainer = NSVisualEffectView()
     private let hkContent = NSView()
-    private let hkTitle = NSTextField(labelWithString: "Hotkey for quick VPN on/off")
+    private let hkTitle = NSTextField(labelWithString: "Toggle VPN Hotkey")
     private let hkField = HotkeyRecordField()
     private let hkSeparator = NSBox()
-    private let hkNote = NSTextField(labelWithString: "Use the hotkey to switch the VPN. It works on the one you last connected to.")
+    private let hkNote = NSTextField(labelWithString: "Toggle the last VPN you connected to with a global keyboard shortcut")
 
     override func loadView() { view = NSView() }
 

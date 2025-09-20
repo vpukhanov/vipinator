@@ -9,7 +9,7 @@ final class AboutViewController: NSViewController {
     private let iconView = NSImageView()
     private let titleLabel = NSTextField(labelWithString: AboutViewController.appName)
     private let versionLabel = NSTextField(labelWithString: "Version \(AboutViewController.appVersion) (\(AboutViewController.buildNumber))")
-    private let supportLabel = NSTextField(labelWithString: "The innovations in this version were made by Artem Chebotok.")
+    private let supportLabel = NSTextField(labelWithString: "With major contributions by Artem Chebotok")
     private let copyrightLabel = NSTextField(labelWithString: AboutViewController.copyright)
 
     override func loadView() { view = NSView() }
@@ -37,9 +37,10 @@ final class AboutViewController: NSViewController {
         // Plain styling (no blue/underline), manual click handler
         supportLabel.isSelectable = false
         supportLabel.allowsEditingTextAttributes = false
-        let fullText = "The innovations in this version were made by Artem Chebotok."
+        let fullText = "With major contributions by Artem Chebotok"
         let attributed = NSMutableAttributedString(string: fullText)
         attributed.addAttribute(.foregroundColor, value: NSColor.secondaryLabelColor, range: NSRange(location: 0, length: attributed.length))
+        attributed.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 28, length: 14))
         supportLabel.attributedStringValue = attributed
 
         let click = NSClickGestureRecognizer(target: self, action: #selector(openAuthorLink))
