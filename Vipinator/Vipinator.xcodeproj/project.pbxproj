@@ -1,0 +1,456 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		11D04F112C3AE4E1002E665D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11D04F102C3AE4E1002E665D /* Assets.xcassets */; };
+		11D04F1E2C3AE6E1002E665D /* VPNManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F1D2C3AE6E1002E665D /* VPNManager.swift */; };
+		11D04F242C3AF710002E665D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D04F232C3AF710002E665D /* SystemConfiguration.framework */; };
+		11D04F2A2C3B0314002E665D /* NetworkConfigurationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F292C3B0314002E665D /* NetworkConfigurationObserver.swift */; };
+		11D04F2C2C3B0B20002E665D /* VipinatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F2B2C3B0B20002E665D /* VipinatorApp.swift */; };
+		9D1F807B2E81EC8700E04137 /* HotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F807A2E81EC8700E04137 /* HotkeyManager.swift */; };
+		9D1F80832E81EE8400E04137 /* HotkeyRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F80822E81EE7100E04137 /* HotkeyRecorderView.swift */; };
+		9D1F80852E81EF5700E04137 /* StatuslconStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F80842E81EF1700E04137 /* StatuslconStyle.swift */; };
+		9D1F80872E81EF9A00E04137 /* VPNMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F80862E81EF9500E04137 /* VPNMenuViewModel.swift */; };
+		9D1F80892E81EFDF00E04137 /* VipinatorMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F80882E81EFD500E04137 /* VipinatorMenuView.swift */; };
+		9D1F808B2E82025800E04137 /* SettingsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F807C2E81EDE600E04137 /* SettingsViews.swift */; };
+		9D5AAAF62E7DF56000E9A273 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 9D5AAAF52E7DF56000E9A273 /* AppIcon.icon */; };
+		9DFA59712E7AEF5100519649 /* LastUsedVPNStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFA59702E7AEF5100519649 /* LastUsedVPNStore.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		11D04F092C3AE4E0002E665D /* Vipinator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vipinator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		11D04F102C3AE4E1002E665D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		11D04F152C3AE4E1002E665D /* Vipinator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vipinator.entitlements; sourceTree = "<group>"; };
+		11D04F1D2C3AE6E1002E665D /* VPNManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNManager.swift; sourceTree = "<group>"; };
+		11D04F232C3AF710002E665D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		11D04F292C3B0314002E665D /* NetworkConfigurationObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfigurationObserver.swift; sourceTree = "<group>"; };
+		11D04F2B2C3B0B20002E665D /* VipinatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VipinatorApp.swift; sourceTree = "<group>"; };
+		11D04F322C3B0FA3002E665D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		11D04F332C3B109E002E665D /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
+		9D1F807A2E81EC8700E04137 /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManager.swift; sourceTree = "<group>"; };
+		9D1F807C2E81EDE600E04137 /* SettingsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViews.swift; sourceTree = "<group>"; };
+		9D1F80822E81EE7100E04137 /* HotkeyRecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyRecorderView.swift; sourceTree = "<group>"; };
+		9D1F80842E81EF1700E04137 /* StatuslconStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatuslconStyle.swift; sourceTree = "<group>"; };
+		9D1F80862E81EF9500E04137 /* VPNMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNMenuViewModel.swift; sourceTree = "<group>"; };
+		9D1F80882E81EFD500E04137 /* VipinatorMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VipinatorMenuView.swift; sourceTree = "<group>"; };
+		9D5AAAF52E7DF56000E9A273 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
+		9DFA59702E7AEF5100519649 /* LastUsedVPNStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastUsedVPNStore.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		11D04F062C3AE4E0002E665D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11D04F242C3AF710002E665D /* SystemConfiguration.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		11D04F002C3AE4E0002E665D = {
+			isa = PBXGroup;
+			children = (
+				11D04F322C3B0FA3002E665D /* README.md */,
+				11D04F332C3B109E002E665D /* LICENSE.md */,
+				11D04F0B2C3AE4E0002E665D /* Vipinator */,
+				11D04F2D2C3B0D6F002E665D /* Supporting Files */,
+				11D04F0A2C3AE4E0002E665D /* Products */,
+				11D04F222C3AF710002E665D /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		11D04F0A2C3AE4E0002E665D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				11D04F092C3AE4E0002E665D /* Vipinator.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		11D04F0B2C3AE4E0002E665D /* Vipinator */ = {
+			isa = PBXGroup;
+			children = (
+				11D04F2E2C3B0D89002E665D /* Application */,
+				9D1F808A2E81F7E000E04137 /* Services */,
+				11D04F2F2C3B0D97002E665D /* StatusMenu */,
+				11D04F302C3B0DAD002E665D /* Settings */,
+				9D5AAAF52E7DF56000E9A273 /* AppIcon.icon */,
+				11D04F312C3B0DBE002E665D /* Resources */,
+			);
+			path = Vipinator;
+			sourceTree = "<group>";
+		};
+		11D04F222C3AF710002E665D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				11D04F232C3AF710002E665D /* SystemConfiguration.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		11D04F2D2C3B0D6F002E665D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				11D04F152C3AE4E1002E665D /* Vipinator.entitlements */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		11D04F2E2C3B0D89002E665D /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				11D04F2B2C3B0B20002E665D /* VipinatorApp.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		11D04F2F2C3B0D97002E665D /* StatusMenu */ = {
+			isa = PBXGroup;
+			children = (
+				9D1F80882E81EFD500E04137 /* VipinatorMenuView.swift */,
+				9D1F80842E81EF1700E04137 /* StatuslconStyle.swift */,
+				9D1F80862E81EF9500E04137 /* VPNMenuViewModel.swift */,
+			);
+			path = StatusMenu;
+			sourceTree = "<group>";
+		};
+		11D04F302C3B0DAD002E665D /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				9D1F807C2E81EDE600E04137 /* SettingsViews.swift */,
+				9D1F80822E81EE7100E04137 /* HotkeyRecorderView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		11D04F312C3B0DBE002E665D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				11D04F102C3AE4E1002E665D /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		9D1F808A2E81F7E000E04137 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				11D04F1D2C3AE6E1002E665D /* VPNManager.swift */,
+				9D1F807A2E81EC8700E04137 /* HotkeyManager.swift */,
+				11D04F292C3B0314002E665D /* NetworkConfigurationObserver.swift */,
+				9DFA59702E7AEF5100519649 /* LastUsedVPNStore.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		11D04F082C3AE4E0002E665D /* Vipinator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 11D04F182C3AE4E1002E665D /* Build configuration list for PBXNativeTarget "Vipinator" */;
+			buildPhases = (
+				11D04F052C3AE4E0002E665D /* Sources */,
+				11D04F062C3AE4E0002E665D /* Frameworks */,
+				11D04F072C3AE4E0002E665D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Vipinator;
+			productName = Vipinator;
+			productReference = 11D04F092C3AE4E0002E665D /* Vipinator.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		11D04F012C3AE4E0002E665D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					11D04F082C3AE4E0002E665D = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = 11D04F042C3AE4E0002E665D /* Build configuration list for PBXProject "Vipinator" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 11D04F002C3AE4E0002E665D;
+			packageReferences = (
+			);
+			productRefGroup = 11D04F0A2C3AE4E0002E665D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				11D04F082C3AE4E0002E665D /* Vipinator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		11D04F072C3AE4E0002E665D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11D04F112C3AE4E1002E665D /* Assets.xcassets in Resources */,
+				9D5AAAF62E7DF56000E9A273 /* AppIcon.icon in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		11D04F052C3AE4E0002E665D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D1F80892E81EFDF00E04137 /* VipinatorMenuView.swift in Sources */,
+				9D1F80872E81EF9A00E04137 /* VPNMenuViewModel.swift in Sources */,
+				11D04F1E2C3AE6E1002E665D /* VPNManager.swift in Sources */,
+				9D1F808B2E82025800E04137 /* SettingsViews.swift in Sources */,
+				9DFA59712E7AEF5100519649 /* LastUsedVPNStore.swift in Sources */,
+				9D1F807B2E81EC8700E04137 /* HotkeyManager.swift in Sources */,
+				9D1F80832E81EE8400E04137 /* HotkeyRecorderView.swift in Sources */,
+				11D04F2C2C3B0B20002E665D /* VipinatorApp.swift in Sources */,
+				9D1F80852E81EF5700E04137 /* StatuslconStyle.swift in Sources */,
+				11D04F2A2C3B0314002E665D /* NetworkConfigurationObserver.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		11D04F162C3AE4E1002E665D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = BFJQQT3YDX;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		11D04F172C3AE4E1002E665D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = BFJQQT3YDX;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		11D04F192C3AE4E1002E665D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=macosx*]" = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = "Supporting Files/Vipinator.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 5;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 694AARYR2X;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Vipinator;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2025 Vyacheslav Pukhanov. MIT License";
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.pukhanov.Vipinator;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		11D04F1A2C3AE4E1002E665D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=macosx*]" = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = "Supporting Files/Vipinator.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 5;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 694AARYR2X;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Vipinator;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2025 Vyacheslav Pukhanov. MIT License";
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.pukhanov.Vipinator;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		11D04F042C3AE4E0002E665D /* Build configuration list for PBXProject "Vipinator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11D04F162C3AE4E1002E665D /* Debug */,
+				11D04F172C3AE4E1002E665D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		11D04F182C3AE4E1002E665D /* Build configuration list for PBXNativeTarget "Vipinator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11D04F192C3AE4E1002E665D /* Debug */,
+				11D04F1A2C3AE4E1002E665D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 11D04F012C3AE4E0002E665D /* Project object */;
+}
