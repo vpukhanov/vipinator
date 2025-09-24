@@ -1,10 +1,3 @@
-//
-//  NetworkConfigurationObserver.swift
-//  Vipinator
-//
-//  Created by Вячеслав Пуханов on 07.07.2024.
-//
-
 import Foundation
 import SystemConfiguration
 

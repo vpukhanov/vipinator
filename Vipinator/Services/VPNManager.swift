@@ -1,10 +1,3 @@
-//
-//  VPNManager.swift
-//  Vipinator
-//
-//  Created by Вячеслав Пуханов on 07.07.2024.
-//
-
 import Foundation
 
 enum VPNStatus: String, CaseIterable {
@@ -12,10 +5,10 @@ enum VPNStatus: String, CaseIterable {
 }
 
 struct VPNConnection: Identifiable, Equatable {
-    let id = UUID()
     let name: String
     let hardwarePort: String
     var status: VPNStatus = .disconnected
+    var id: String { name }
 }
 
 enum VPNManager {
@@ -31,18 +24,36 @@ enum VPNManager {
 
     static func connect(to connection: VPNConnection) async throws -> Bool {
         let initialStatus = try await getStatus(for: connection)
+        guard initialStatus != .connected && initialStatus != .connecting else { return false }
+
         _ = try await runNetworkSetupCommand(arguments: ["-connectpppoeservice", connection.name], allowEmptyOutput: true)
-        try await Task.sleep(for: .seconds(2))
-        let finalStatus = try await getStatus(for: connection)
-        return (initialStatus != .connected) && (finalStatus == .connected)
+
+        if let status = try await waitForStatus(
+            of: connection,
+            desired: [.connected],
+            timeout: 8
+        ) {
+            return status == .connected
+        }
+
+        return false
     }
 
     static func disconnect(from connection: VPNConnection) async throws -> Bool {
         let initialStatus = try await getStatus(for: connection)
+        guard initialStatus == .connected || initialStatus == .connecting else { return false }
+
         _ = try await runNetworkSetupCommand(arguments: ["-disconnectpppoeservice", connection.name], allowEmptyOutput: true)
-        try await Task.sleep(for: .seconds(2))
-        let finalStatus = try await getStatus(for: connection)
-        return (initialStatus == .connected) && (finalStatus != .connected)
+
+        if let status = try await waitForStatus(
+            of: connection,
+            desired: [.disconnected, .invalid],
+            timeout: 8
+        ) {
+            return status == .disconnected || status == .invalid
+        }
+
+        return false
     }
 
     private static func runNetworkSetupCommand(arguments: [String], allowEmptyOutput: Bool = false) async throws -> String {
@@ -138,6 +149,27 @@ enum VPNManager {
         var name: String?
         var hardwarePort: String?
         var device: String?
+    }
+
+    private static func waitForStatus(
+        of connection: VPNConnection,
+        desired: Set<VPNStatus>,
+        timeout: TimeInterval,
+        pollInterval: TimeInterval = 0.25
+    ) async throws -> VPNStatus? {
+        let deadline = Date().addingTimeInterval(timeout)
+
+        while Date() < deadline {
+            let status = try await getStatus(for: connection)
+            if desired.contains(status) {
+                return status
+            }
+
+            let nanoseconds = UInt64(pollInterval * 1_000_000_000)
+            try await Task.sleep(nanoseconds: nanoseconds)
+        }
+
+        return nil
     }
 }
 

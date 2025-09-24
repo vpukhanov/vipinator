@@ -1,19 +1,21 @@
-//
-//  VipinatorApp.swift
-//  Vipinator
-//
-//  Created by Вячеслав Пуханов on 07.07.2024.
-//
-
 import SwiftUI
 
 @main
 struct VipinatorApp: App {
-    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject private var menuViewModel = VPNMenuViewModel()
 
     var body: some Scene {
+        MenuBarExtra {
+            VipinatorMenuView()
+                .environmentObject(menuViewModel)
+        } label: {
+            StatusIconLabel()
+                .environmentObject(menuViewModel)
+        }
+
         Settings {
-            EmptyView()
+            SettingsViews()
+                .environmentObject(menuViewModel)
         }
     }
 }
