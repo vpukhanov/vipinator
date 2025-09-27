@@ -1,11 +1,3 @@
-//
-//  LastUsedVPNStore.swift
-//  Vipinator
-//
-//  Created by Artem Chebotok on 17.09.2025.
-//
-
-
 import Foundation
 
 final class LastUsedVPNStore {

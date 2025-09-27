@@ -38,7 +38,7 @@ https://github.com/vpukhanov/Vipinator/assets/1694616/997df21d-6957-47ad-a938-18
 
 ## Requirements
 
-- macOS 13.0 or later
+- macOS 14.0 or later
 - Xcode 14.0 or later (for building from source)
 
 ## Usage
