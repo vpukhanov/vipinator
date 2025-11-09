@@ -40,26 +40,21 @@ struct PersonalizationView: View {
 
     var body: some View {
         Form {
-            Section {
-                Text("Menu Bar Icon")
-                    .font(.headline)
-                
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                    ForEach(StatusIconStyle.allCases, id: \.self) { style in
-                        IconOptionButton(
-                            style: style,
-                            isSelected: style.rawValue == storedIconStyle
-                        ) {
-                            storedIconStyle = style.rawValue
-                            NotificationCenter.default.post(name: .statusIconStyleDidChange, object: nil)
+            Section(header: Text("Menu Bar Icon")) {
+                Grid(alignment: .center, verticalSpacing: 0) {
+                    Color.clear.frame(height: 0)
+                    GridRow {
+                        ForEach(StatusIconStyle.allCases, id: \.self) { style in
+                            IconOptionButton(
+                                style: style,
+                                isSelected: style.rawValue == storedIconStyle
+                            ) {
+                                storedIconStyle = style.rawValue
+                                NotificationCenter.default.post(name: .statusIconStyleDidChange, object: nil)
+                            }
                         }
                     }
                 }
-                .padding(.vertical, 8)
-                
-                Text("Choose the appearance of the icon in the menu bar")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
             }
         }
         .formStyle(.grouped)
