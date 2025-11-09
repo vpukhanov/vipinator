@@ -6,10 +6,10 @@
 import SwiftUI
 import AppKit
 import ServiceManagement
+import KeyboardShortcuts
 
 struct GeneralSettingsView: View {
     @State private var isOpenAtLogin: Bool = SMAppService.mainApp.status == .enabled
-    @State private var hotkeyDisplayString: String = HotkeyManager.shared.currentDisplayString()
     
     var body: some View {
         Form {
@@ -38,8 +38,7 @@ struct GeneralSettingsView: View {
                 HStack {
                     Text("Toggle VPN Hotkey")
                     Spacer()
-                    HotkeyRecorderView(displayString: $hotkeyDisplayString)
-                        .frame(width: 150, height: 28)
+                    KeyboardShortcuts.Recorder(for: .toggleVPN)
                 }
                 
                 Text("Toggle the last VPN you connected to with a global keyboard shortcut")
@@ -48,10 +47,6 @@ struct GeneralSettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .onAppear {
-            HotkeyManager.shared.ensureDefaultRegistered()
-            hotkeyDisplayString = HotkeyManager.shared.currentDisplayString()
-        }
     }
 }
 

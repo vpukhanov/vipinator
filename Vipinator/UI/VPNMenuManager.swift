@@ -6,12 +6,16 @@
 //
 
 import Cocoa
+import KeyboardShortcuts
+
+extension KeyboardShortcuts.Name {
+    static let toggleVPN = Self("toggleVPN")
+}
 
 @MainActor
 class VPNMenuManager: NSObject, NSMenuDelegate {
     private let statusItemManager: VPNStatusItemManager
     private var vpnConnections: [VPNConnection] = []
-    private var hotkeyObserver: NSObjectProtocol?
     
     private let settingsMenuItem = NSMenuItem(title: "Settings…",
                                               action: #selector(openSettings),
@@ -27,10 +31,12 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
         super.init()
         settingsMenuItem.target = self
         setupMenu()
-        hotkeyObserver = NotificationCenter.default.addObserver(
-            forName: .vpnHotkeyPressed, object: nil, queue: .main
-        ) { [weak self] _ in
-            Task { [weak self] in
+        setupHotkey()
+    }
+    
+    private func setupHotkey() {
+        KeyboardShortcuts.onKeyUp(for: .toggleVPN) { [weak self] in
+            Task { @MainActor [weak self] in
                 await self?.toggleLastUsedVPN()
             }
         }
@@ -205,9 +211,5 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
     
     private func loadLastUsedVPN() -> String? {
         UserDefaults.standard.string(forKey: Self.lastUsedVPNKey)
-    }
-
-    deinit {
-        if let o = hotkeyObserver { NotificationCenter.default.removeObserver(o) }
     }
 }

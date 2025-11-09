@@ -11,7 +11,7 @@
 		11A9518A2EC085DB00F06CAD /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A951842EC085DB00F06CAD /* AboutView.swift */; };
 		11A9518B2EC085DB00F06CAD /* PersonalizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A951872EC085DB00F06CAD /* PersonalizationView.swift */; };
 		11A9518C2EC085DB00F06CAD /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A951882EC085DB00F06CAD /* SettingsView.swift */; };
-		11A9518D2EC085DB00F06CAD /* HotkeyRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A951862EC085DB00F06CAD /* HotkeyRecorderView.swift */; };
+		11A951912EC0B36E00F06CAD /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 11A951902EC0B36E00F06CAD /* KeyboardShortcuts */; };
 		11D04F0D2C3AE4E0002E665D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F0C2C3AE4E0002E665D /* AppDelegate.swift */; };
 		11D04F1E2C3AE6E1002E665D /* VPNManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F1D2C3AE6E1002E665D /* VPNManager.swift */; };
 		11D04F242C3AF710002E665D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D04F232C3AF710002E665D /* SystemConfiguration.framework */; };
@@ -25,7 +25,6 @@
 /* Begin PBXFileReference section */
 		11A951842EC085DB00F06CAD /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		11A951852EC085DB00F06CAD /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
-		11A951862EC085DB00F06CAD /* HotkeyRecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyRecorderView.swift; sourceTree = "<group>"; };
 		11A951872EC085DB00F06CAD /* PersonalizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalizationView.swift; sourceTree = "<group>"; };
 		11A951882EC085DB00F06CAD /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		11D04F092C3AE4E0002E665D /* Vipinator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vipinator.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,6 +47,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				11D04F242C3AF710002E665D /* SystemConfiguration.framework in Frameworks */,
+				11A951912EC0B36E00F06CAD /* KeyboardShortcuts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,7 +124,6 @@
 			children = (
 				11A951842EC085DB00F06CAD /* AboutView.swift */,
 				11A951852EC085DB00F06CAD /* GeneralSettingsView.swift */,
-				11A951862EC085DB00F06CAD /* HotkeyRecorderView.swift */,
 				11A951872EC085DB00F06CAD /* PersonalizationView.swift */,
 				11A951882EC085DB00F06CAD /* SettingsView.swift */,
 				11D04F252C3B0290002E665D /* VPNStatusItemManager.swift */,
@@ -178,6 +177,7 @@
 			);
 			mainGroup = 11D04F002C3AE4E0002E665D;
 			packageReferences = (
+				11A9518F2EC0B36E00F06CAD /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 			);
 			productRefGroup = 11D04F0A2C3AE4E0002E665D /* Products */;
 			projectDirPath = "";
@@ -210,7 +210,6 @@
 				11A9518A2EC085DB00F06CAD /* AboutView.swift in Sources */,
 				11A9518B2EC085DB00F06CAD /* PersonalizationView.swift in Sources */,
 				11A9518C2EC085DB00F06CAD /* SettingsView.swift in Sources */,
-				11A9518D2EC085DB00F06CAD /* HotkeyRecorderView.swift in Sources */,
 				11D04F2C2C3B0B20002E665D /* VipinatorApp.swift in Sources */,
 				11D04F2A2C3B0314002E665D /* NetworkConfigurationObserver.swift in Sources */,
 				11D04F0D2C3AE4E0002E665D /* AppDelegate.swift in Sources */,
@@ -431,6 +430,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		11A9518F2EC0B36E00F06CAD /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		11A951902EC0B36E00F06CAD /* KeyboardShortcuts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 11A9518F2EC0B36E00F06CAD /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 11D04F012C3AE4E0002E665D /* Project object */;
 }
