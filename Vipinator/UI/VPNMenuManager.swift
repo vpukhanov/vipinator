@@ -29,7 +29,6 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
     init(statusItemManager: VPNStatusItemManager) {
         self.statusItemManager = statusItemManager
         super.init()
-        settingsMenuItem.target = self
         setupMenu()
         setupHotkey()
     }
@@ -46,6 +45,7 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
         let menu = NSMenu()
         menu.delegate = self
         statusItemManager.statusItem?.menu = menu
+        settingsMenuItem.target = self
     }
 
     func rebuildMenu() {
@@ -202,7 +202,7 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
             }
         }
 
-        statusItemManager.updateIcon(isConnected: isAnyVPNConnected)
+        statusItemManager.updateStatus(isConnected: isAnyVPNConnected)
     }
     
     private func saveLastUsedVPN(_ name: String) {
