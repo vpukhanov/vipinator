@@ -33,7 +33,7 @@ struct AboutView: View {
             Text(version)
                 .foregroundStyle(.secondary)
             
-            Link("With major contributions by Artem Chebotok", destination: URL(string: "https://github.com/aachebotok")!)
+            Link("With major contributions by \(Text("Artem Chebotok").underline())", destination: URL(string: "https://github.com/aachebotok")!)
                 .foregroundStyle(.secondary)
             
             Text(copyright)

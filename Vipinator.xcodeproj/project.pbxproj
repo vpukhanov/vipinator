@@ -12,6 +12,7 @@
 		11A9518B2EC085DB00F06CAD /* PersonalizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A951872EC085DB00F06CAD /* PersonalizationView.swift */; };
 		11A9518C2EC085DB00F06CAD /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A951882EC085DB00F06CAD /* SettingsView.swift */; };
 		11A951912EC0B36E00F06CAD /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 11A951902EC0B36E00F06CAD /* KeyboardShortcuts */; };
+		11A951942EC0B62E00F06CAD /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A951932EC0B62A00F06CAD /* Binding+Extension.swift */; };
 		11D04F0D2C3AE4E0002E665D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F0C2C3AE4E0002E665D /* AppDelegate.swift */; };
 		11D04F1E2C3AE6E1002E665D /* VPNManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D04F1D2C3AE6E1002E665D /* VPNManager.swift */; };
 		11D04F242C3AF710002E665D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D04F232C3AF710002E665D /* SystemConfiguration.framework */; };
@@ -27,6 +28,7 @@
 		11A951852EC085DB00F06CAD /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		11A951872EC085DB00F06CAD /* PersonalizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalizationView.swift; sourceTree = "<group>"; };
 		11A951882EC085DB00F06CAD /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		11A951932EC0B62A00F06CAD /* Binding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extension.swift"; sourceTree = "<group>"; };
 		11D04F092C3AE4E0002E665D /* Vipinator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vipinator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11D04F0C2C3AE4E0002E665D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		11D04F152C3AE4E1002E665D /* Vipinator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vipinator.entitlements; sourceTree = "<group>"; };
@@ -54,6 +56,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		11A951922EC0B61D00F06CAD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				11A951932EC0B62A00F06CAD /* Binding+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		11D04F002C3AE4E0002E665D = {
 			isa = PBXGroup;
 			children = (
@@ -77,6 +87,7 @@
 		11D04F0B2C3AE4E0002E665D /* Vipinator */ = {
 			isa = PBXGroup;
 			children = (
+				11A951922EC0B61D00F06CAD /* Extensions */,
 				11D04F2E2C3B0D89002E665D /* Application */,
 				11D04F2F2C3B0D97002E665D /* Services */,
 				11D04F302C3B0DAD002E665D /* UI */,
@@ -210,6 +221,7 @@
 				11A9518A2EC085DB00F06CAD /* AboutView.swift in Sources */,
 				11A9518B2EC085DB00F06CAD /* PersonalizationView.swift in Sources */,
 				11A9518C2EC085DB00F06CAD /* SettingsView.swift in Sources */,
+				11A951942EC0B62E00F06CAD /* Binding+Extension.swift in Sources */,
 				11D04F2C2C3B0B20002E665D /* VipinatorApp.swift in Sources */,
 				11D04F2A2C3B0314002E665D /* NetworkConfigurationObserver.swift in Sources */,
 				11D04F0D2C3AE4E0002E665D /* AppDelegate.swift in Sources */,

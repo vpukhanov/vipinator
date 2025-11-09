@@ -13,40 +13,29 @@ struct GeneralSettingsView: View {
     
     var body: some View {
         Form {
-            Section {
-                Toggle("Open at Login", isOn: $isOpenAtLogin)
-                    .onChange(of: isOpenAtLogin) { oldValue, newValue in
-                        do {
-                            if newValue {
-                                try SMAppService.mainApp.register()
-                            } else {
-                                try SMAppService.mainApp.unregister()
-                            }
-                        } catch {
-                            NSSound.beep()
-                            isOpenAtLogin = SMAppService.mainApp.status == .enabled
-                            NSLog("OpenAtLogin toggle error: \(error.localizedDescription)")
-                        }
-                    }
-                
-                Text("Launch Vipinator in the menu bar when you start your device")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+            Section(header: Text("Login Item"), footer: Text("Launch Vipinator in the menu bar when you start your device")) {
+                Toggle("Open at Login", isOn: $isOpenAtLogin.onChange(toggleOpenAtLogin))
             }
             
-            Section {
-                HStack {
-                    Text("Toggle VPN Hotkey")
-                    Spacer()
-                    KeyboardShortcuts.Recorder(for: .toggleVPN)
-                }
-                
-                Text("Toggle the last VPN you connected to with a global keyboard shortcut")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+            Section(header: Text("Hotkeys"), footer: Text("Toggle the last VPN you connected to with a global keyboard shortcut")) {
+                KeyboardShortcuts.Recorder("Toggle recent VPN", name: .toggleVPN)
             }
         }
         .formStyle(.grouped)
+    }
+    
+    private func toggleOpenAtLogin() {
+        do {
+            if isOpenAtLogin {
+                try SMAppService.mainApp.register()
+            } else {
+                try SMAppService.mainApp.unregister()
+            }
+        } catch {
+            NSSound.beep()
+            isOpenAtLogin = SMAppService.mainApp.status == .enabled
+            NSLog("OpenAtLogin toggle error: \(error.localizedDescription)")
+        }
     }
 }
 
