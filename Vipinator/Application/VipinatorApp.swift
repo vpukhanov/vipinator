@@ -13,7 +13,8 @@ struct VipinatorApp: App {
 
     var body: some Scene {
         Settings {
-            EmptyView()
+            SettingsView()
         }
+        .defaultSize(width: 520, height: 360)
     }
 }
