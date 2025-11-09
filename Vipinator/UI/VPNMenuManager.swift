@@ -12,11 +12,20 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
     private let statusItemManager: VPNStatusItemManager
     private var vpnConnections: [VPNConnection] = []
     private var hotkeyObserver: NSObjectProtocol?
-    private let lastStore = LastUsedVPNStore.shared
+    
+    private let settingsMenuItem = NSMenuItem(title: "Settings…",
+                                              action: #selector(openSettings),
+                                              keyEquivalent: ",")
+    private let quitMenuItem = NSMenuItem(title: "Quit",
+                                          action: #selector(NSApplication.terminate(_:)),
+                                          keyEquivalent: "q")
+    
+    private static let lastUsedVPNKey = "LastUsedVPNName"
 
     init(statusItemManager: VPNStatusItemManager) {
         self.statusItemManager = statusItemManager
         super.init()
+        settingsMenuItem.target = self
         setupMenu()
         hotkeyObserver = NotificationCenter.default.addObserver(
             forName: .vpnHotkeyPressed, object: nil, queue: .main
@@ -35,6 +44,7 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
 
     func rebuildMenu() {
         guard let menu = statusItemManager.statusItem?.menu else { return }
+        
         menu.removeAllItems()
 
         for (index, vpn) in vpnConnections.enumerated() {
@@ -42,6 +52,7 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
             let item = NSMenuItem(title: vpn.name,
                                   action: #selector(vpnItemClicked(_:)),
                                   keyEquivalent: shortcut)
+
             if !shortcut.isEmpty { item.keyEquivalentModifierMask = .command }
             item.target = self
             item.representedObject = vpn
@@ -51,16 +62,8 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
         }
 
         menu.addItem(.separator())
-
-        let settingsItem = NSMenuItem(title: "Settings…",
-                                      action: #selector(openSettings),
-                                      keyEquivalent: ",")
-        settingsItem.target = self
-        menu.addItem(settingsItem)
-
-        menu.addItem(NSMenuItem(title: "Quit",
-                                action: #selector(NSApplication.terminate(_:)),
-                                keyEquivalent: "q"))
+        menu.addItem(settingsMenuItem)
+        menu.addItem(quitMenuItem)
     }
 
     func menuWillOpen(_ menu: NSMenu) {
@@ -72,45 +75,41 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
 
     @objc private func vpnItemClicked(_ sender: NSMenuItem) {
         guard let vpn = sender.representedObject as? VPNConnection else { return }
-
         Task {
-            do {
-                let currentStatus = try await VPNManager.getStatus(for: vpn)
-                switch currentStatus {
-                case .connected:
-                    await disconnectVPN(vpn)
-                case .disconnected:
-                    await connectVPN(vpn)
-                case .connecting, .disconnecting, .invalid:
-                    break
-                }
-            } catch {
-                print("Error getting VPN status: \(error)")
-            }
+            await toggleVPN(vpn)
         }
     }
 
     @objc private func openSettings() {
-        SettingsWindowController.shared.show()
+        NSApp.activate(ignoringOtherApps: true)
+        if let event = NSEvent.keyEvent(
+            with: .keyDown,
+            location: NSPoint(),
+            modifierFlags: .command,
+            timestamp: 0,
+            windowNumber: 0,
+            context: nil,
+            characters: "",
+            charactersIgnoringModifiers: ",",
+            isARepeat: false,
+            keyCode: 43 // comma
+        ) {
+            NSApplication.shared.postEvent(event, atStart: false)
+        }
     }
 
     private func updateMenuItem(_ menuItem: NSMenuItem, for vpn: VPNConnection) async {
         do {
             let status = try await VPNManager.getStatus(for: vpn)
             await MainActor.run {
+                menuItem.isEnabled = status == .connected || status == .disconnected
                 switch status {
                 case .connected:
                     menuItem.state = .on
-                    menuItem.isEnabled = true
-                case .disconnected:
+                case .disconnected, .invalid:
                     menuItem.state = .off
-                    menuItem.isEnabled = true
                 case .connecting, .disconnecting:
                     menuItem.state = .mixed
-                    menuItem.isEnabled = false
-                case .invalid:
-                    menuItem.state = .off
-                    menuItem.isEnabled = false
                 }
             }
         } catch {
@@ -130,19 +129,25 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
         if vpnConnections.isEmpty {
             await loadVPNConnections()
         }
-        let targetName = lastStore.load() ?? vpnConnections.first?.name
-        guard let name = targetName,
-              let vpn = vpnConnections.first(where: { $0.name == name }) else { return }
+        let name = loadLastUsedVPN() ?? ""
+        guard
+              let vpn = vpnConnections.first(where: { $0.name == name }) ?? vpnConnections.first else { return }
+        await toggleVPN(vpn)
+    }
+    
+    private func toggleVPN(_ vpn: VPNConnection) async {
         do {
             let status = try await VPNManager.getStatus(for: vpn)
             switch status {
-            case .connected, .connecting:
+            case .connected:
                 await disconnectVPN(vpn)
-            case .disconnected, .invalid, .disconnecting:
+            case .disconnected:
                 await connectVPN(vpn)
+            case .connecting, .disconnecting, .invalid:
+                break
             }
         } catch {
-            print("Hotkey toggle failed: \(error)")
+            print("VPN toggle failed: \(error)")
         }
     }
 
@@ -150,9 +155,10 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
         do {
             let success = try await VPNManager.connect(to: vpn)
             if success {
-                lastStore.save(vpn.name)
+                saveLastUsedVPN(vpn.name)
+            } else {
+                print("Failed to connect to VPN: \(vpn.name)")
             }
-            if !success { print("Failed to connect to VPN: \(vpn.name)") }
             await updateVPNStatuses()
         } catch {
             print("Error connecting to VPN: \(vpn.name). \(error)")
@@ -192,8 +198,13 @@ class VPNMenuManager: NSObject, NSMenuDelegate {
 
         statusItemManager.updateIcon(isConnected: isAnyVPNConnected)
     }
-    func lastUsedVPNName() -> String? {
-        lastStore.load()
+    
+    private func saveLastUsedVPN(_ name: String) {
+        UserDefaults.standard.set(name, forKey: Self.lastUsedVPNKey)
+    }
+    
+    private func loadLastUsedVPN() -> String? {
+        UserDefaults.standard.string(forKey: Self.lastUsedVPNKey)
     }
 
     deinit {

@@ -1,174 +1,39 @@
 //
-//  GeneralSettingsViewController.swift
+//  HotkeyRecorderView.swift
 //  Vipinator
 //
 
+import SwiftUI
 import AppKit
-import ServiceManagement
 import Carbon.HIToolbox
 
-final class GeneralSettingsViewController: NSViewController {
-    private let container = NSVisualEffectView()
-    private let content = NSView()
-
-    private let titleLabel = NSTextField(labelWithString: "Open at Login")
-    private let switchControl = NSSwitch()
-    private let footnote = NSTextField(labelWithString: "Launch Vipinator in the menu bar when you start your device")
-    private let separator = NSBox()
-
-    private let hkContainer = NSVisualEffectView()
-    private let hkContent = NSView()
-    private let hkTitle = NSTextField(labelWithString: "Toggle VPN Hotkey")
-    private let hkField = HotkeyRecordField()
-    private let hkSeparator = NSBox()
-    private let hkNote = NSTextField(labelWithString: "Toggle the last VPN you connected to with a global keyboard shortcut")
-
-    override func loadView() { view = NSView() }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        container.material = .contentBackground
-        container.blendingMode = .behindWindow
-        container.state = .active
-        container.translatesAutoresizingMaskIntoConstraints = false
-        container.wantsLayer = true
-        container.layer?.cornerRadius = 12
-        container.layer?.masksToBounds = true
-
-        content.translatesAutoresizingMaskIntoConstraints = false
-        container.addSubview(content)
-        view.addSubview(container)
-
-        NSLayoutConstraint.activate([
-            container.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            container.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            container.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-
-            content.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
-            content.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16),
-            content.topAnchor.constraint(equalTo: container.topAnchor, constant: 14),
-            content.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -14)
-        ])
-
-        titleLabel.font = .systemFont(ofSize: 15, weight: .semibold)
-        titleLabel.alignment = .left
-        titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
-
-        switchControl.target = self
-        switchControl.action = #selector(toggleOpenAtLogin)
-
-        switchControl.state = isOpenAtLoginEnabled ? .on : .off
-
-        separator.boxType = .separator
-        separator.translatesAutoresizingMaskIntoConstraints = false
-
-        footnote.alignment = .left
-        footnote.textColor = .secondaryLabelColor
-        footnote.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
-        footnote.translatesAutoresizingMaskIntoConstraints = false
-
-        [titleLabel, switchControl, separator, footnote].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            content.addSubview($0)
-        }
-
-        NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: content.leadingAnchor),
-            titleLabel.topAnchor.constraint(equalTo: content.topAnchor),
-            switchControl.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            switchControl.trailingAnchor.constraint(equalTo: content.trailingAnchor),
-
-            separator.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
-            separator.leadingAnchor.constraint(equalTo: content.leadingAnchor),
-            separator.trailingAnchor.constraint(equalTo: content.trailingAnchor),
-
-            footnote.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8),
-            footnote.leadingAnchor.constraint(equalTo: content.leadingAnchor),
-            footnote.trailingAnchor.constraint(lessThanOrEqualTo: content.trailingAnchor),
-            footnote.bottomAnchor.constraint(equalTo: content.bottomAnchor)
-        ])
-
-        hkContainer.material = .contentBackground
-        hkContainer.blendingMode = .behindWindow
-        hkContainer.state = .active
-        hkContainer.translatesAutoresizingMaskIntoConstraints = false
-        hkContainer.wantsLayer = true
-        hkContainer.layer?.cornerRadius = 12
-        hkContainer.layer?.masksToBounds = true
-
-        hkContent.translatesAutoresizingMaskIntoConstraints = false
-        hkContainer.addSubview(hkContent)
-        view.addSubview(hkContainer)
-
-        NSLayoutConstraint.activate([
-            hkContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            hkContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            hkContainer.topAnchor.constraint(equalTo: container.bottomAnchor, constant: 12),
-
-            hkContent.leadingAnchor.constraint(equalTo: hkContainer.leadingAnchor, constant: 16),
-            hkContent.trailingAnchor.constraint(equalTo: hkContainer.trailingAnchor, constant: -16),
-            hkContent.topAnchor.constraint(equalTo: hkContainer.topAnchor, constant: 14),
-            hkContent.bottomAnchor.constraint(equalTo: hkContainer.bottomAnchor, constant: -14)
-        ])
-
-        hkTitle.font = .systemFont(ofSize: 15, weight: .semibold)
-        hkTitle.alignment = .left
-
-        hkField.translatesAutoresizingMaskIntoConstraints = false
-        hkField.onChange = { keyCode, modifiers in
+struct HotkeyRecorderView: NSViewRepresentable {
+    @Binding var displayString: String
+    
+    func makeNSView(context: Context) -> HotkeyRecordField {
+        let field = HotkeyRecordField()
+        field.onChange = { keyCode, modifiers in
             HotkeyManager.shared.saveAndRegister(keyCode: keyCode, modifiers: modifiers)
+            DispatchQueue.main.async {
+                if let (code, mods) = HotkeyManager.shared.current() {
+                    displayString = HotkeyManager.shared.displayString(keyCode: code, modifiers: mods)
+                } else {
+                    displayString = "Disabled"
+                }
+            }
         }
-        hkField.syncFromManager()
-
-        hkSeparator.boxType = .separator
-        hkSeparator.translatesAutoresizingMaskIntoConstraints = false
-
-        hkNote.alignment = .left
-        hkNote.textColor = .secondaryLabelColor
-        hkNote.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
-
-        [hkTitle, hkField, hkSeparator, hkNote].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            hkContent.addSubview($0)
+        field.syncFromManager()
+        if let (code, mods) = HotkeyManager.shared.current() {
+            displayString = HotkeyManager.shared.displayString(keyCode: code, modifiers: mods)
+        } else {
+            displayString = "Disabled"
         }
-
-        NSLayoutConstraint.activate([
-            hkTitle.leadingAnchor.constraint(equalTo: hkContent.leadingAnchor),
-            hkTitle.topAnchor.constraint(equalTo: hkContent.topAnchor),
-
-            hkField.centerYAnchor.constraint(equalTo: hkTitle.centerYAnchor),
-            hkField.trailingAnchor.constraint(equalTo: hkContent.trailingAnchor),
-            hkField.widthAnchor.constraint(equalTo: hkContent.widthAnchor, multiplier: 0.30),
-
-            hkSeparator.topAnchor.constraint(equalTo: hkTitle.bottomAnchor, constant: 12),
-            hkSeparator.leadingAnchor.constraint(equalTo: hkContent.leadingAnchor),
-            hkSeparator.trailingAnchor.constraint(equalTo: hkContent.trailingAnchor),
-
-            hkNote.topAnchor.constraint(equalTo: hkSeparator.bottomAnchor, constant: 8),
-            hkNote.leadingAnchor.constraint(equalTo: hkContent.leadingAnchor),
-            hkNote.trailingAnchor.constraint(lessThanOrEqualTo: hkContent.trailingAnchor),
-            hkNote.bottomAnchor.constraint(equalTo: hkContent.bottomAnchor)
-        ])
-
-        HotkeyManager.shared.ensureDefaultRegistered()
+        return field
     }
-
-    private var isOpenAtLoginEnabled: Bool {
-        SMAppService.mainApp.status == .enabled
+    
+    func updateNSView(_ nsView: HotkeyRecordField, context: Context) {
+        nsView.syncFromManager()
     }
-
-    @objc private func toggleOpenAtLogin(_ sender: NSSwitch) {
-        do {
-            if sender.state == .on { try SMAppService.mainApp.register() }
-            else { try SMAppService.mainApp.unregister() }
-        } catch {
-            NSSound.beep()
-            sender.state = isOpenAtLoginEnabled ? .on : .off
-            NSLog("OpenAtLogin toggle error: \(error.localizedDescription)")
-        }
-    }
-
 }
 
 extension Notification.Name {
