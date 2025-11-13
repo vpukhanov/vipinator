@@ -1,40 +1,49 @@
 {
-  "color-space-for-untagged-svg-colors" : "display-p3",
   "fill" : {
     "linear-gradient" : [
-      "srgb:1.00000,1.00000,1.00000,1.00000",
-      "srgb:0.56863,0.69412,0.74510,1.00000"
-    ]
+      "display-p3:0.85567,0.95272,1.00000,1.00000",
+      "display-p3:0.53223,0.62061,0.66357,1.00000"
+    ],
+    "orientation" : {
+      "start" : {
+        "x" : 0.5,
+        "y" : 0
+      },
+      "stop" : {
+        "x" : 0.5,
+        "y" : 0.7
+      }
+    }
   },
   "groups" : [
     {
       "layers" : [
         {
-          "hidden" : false,
-          "image-name" : "Untitled 3.png",
-          "name" : "Untitled 3",
+          "image-name" : "BoltHorizontal.svg",
+          "name" : "BoltHorizontal",
           "position" : {
-            "scale" : 2.6,
+            "scale" : 1,
             "translation-in-points" : [
-              0,
-              0
+              0.0032121332230872213,
+              -0.005000000000109139
             ]
           }
         }
       ],
       "shadow" : {
-        "kind" : "neutral",
+        "kind" : "layer-color",
         "opacity" : 0.5
       },
       "translucency" : {
         "enabled" : true,
-        "value" : 0.5
+        "value" : 0.2
       }
     }
   ],
   "supported-platforms" : {
-    "squares" : [
-      "macOS"
-    ]
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
   }
 }
