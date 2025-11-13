@@ -3,7 +3,7 @@
 Vipinator is a macOS menu bar app that provides easy management of VPN connections. It allows users to quickly connect, disconnect, and view the status of their VPN connections directly from the menu bar.
 
 <p align="center">
-  <img src="https://github.com/vpukhanov/Vipinator/assets/1694616/40243d39-9688-4be1-9419-c1d28eef30a8" width="512" height="512" alt="Vipinator's icon"/>
+  <img src="https://github.com/user-attachments/assets/59e1c4ca-04ef-4aad-8ba5-36bcb9b483cd" width="512" height="512" alt="Vipinator's icon"/>
 </p>
 
 ## Features
